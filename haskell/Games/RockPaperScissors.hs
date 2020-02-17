@@ -32,3 +32,6 @@ basic.forever(function () {
 	
 })
 --}
+
+import MicroBit
+main  = print 1

@@ -1,0 +1,11 @@
+#simple
+ghc -i MicroBit Tutorials/Dice.hs
+ghc -i MicroBit Tutorials/FlashingHeart.hs
+ghc -i MicroBit Tutorials/LoveMeter.hs
+ghc -i MicroBit Tutorials/MicroChat.hs
+ghc -i MicroBit Tutorials/MicroChatGroup1.hs
+ghc -i MicroBit Tutorials/NameTag.hs
+ghc -i MicroBit Tutorials/SmileyButtonsA.hs
+ghc -i MicroBit Tutorials/SmileyButtonsAB.hs
+ghc -i MicroBit Games/CoinFlipper.hs
+ghc -i MicroBit Games/RockPaperScissors.hs

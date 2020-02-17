@@ -4,3 +4,6 @@ basic.forever(function () {
     basic.showString("Test")
 })
 --}
+
+import MicroBit
+main  = print 1

@@ -1,0 +1,8 @@
+rm *.hi
+rm *.o
+
+rm Tutorials/*.hi
+rm Tutorials/*.o
+
+rm Games/*.hi
+rm Games/*.o

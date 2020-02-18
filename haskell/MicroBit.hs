@@ -1,6 +1,7 @@
 module MicroBit where
 
 data MicroBit msg = MicroBit msg
+
 data Attribute msg = Attribute msg
 
 --------------------------------------------
@@ -9,7 +10,8 @@ data Icon = String
 
 data IconNames = SmallDiamond | Diamond | Yes | No | NoPattern
 
--- ------------------------------------------
+--------------------------------------------
+
 onStart :: [MicroBit msg] -> MicroBit msg
 onStart a = (a!!0)
 
@@ -54,7 +56,6 @@ onTiltLeft a = Attribute a
 onTiltRight :: msg -> Attribute msg
 onTiltRight a = Attribute a
 
-
 onFreeFall :: msg -> Attribute msg
 onFreeFall a = Attribute a
 
@@ -66,7 +67,6 @@ onSixG a = Attribute a
 
 onEightG :: msg -> Attribute msg
 onEightG a = Attribute a
-
 
 onPin0 ::  msg -> Attribute  msg
 onPin0 a = Attribute a 
@@ -89,11 +89,16 @@ onButtonAB a = Attribute a
 onReceivedString ::  msg -> Attribute  msg
 onReceivedString a = Attribute a 
 
-
 -------------------------------------------
 
 showstring :: msg -> String -> MicroBit msg
 showstring m str =  MicroBit m 
+
+showleds :: msg -> String -> MicroBit msg
+showleds m str =  MicroBit m 
+
+shownumber :: msg -> Int -> MicroBit msg
+shownumber m num =  MicroBit m 
 
 showicon :: msg -> IconNames -> MicroBit msg
 showicon m i =  MicroBit m
@@ -104,8 +109,11 @@ setGroup m num =  MicroBit m
 sendString ::msg -> String -> MicroBit msg
 sendString m str =  MicroBit m 
 
+pause :: msg -> Int -> MicroBit msg
+pause m num =  MicroBit m 
 
 -------------------------------------
+
 microbit :: [MicroBit msg] -> MicroBit msg
 microbit li = (li !! 1)
 
@@ -119,4 +127,3 @@ fromInt :: Int -> String
 fromInt n = show n
 
 main = print 1
-

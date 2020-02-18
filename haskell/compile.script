@@ -11,3 +11,11 @@ ghc Tutorials/SmileyButtonsA.hs
 ghc Tutorials/SmileyButtonsAB.hs
 ghc Games/CoinFlipper.hs
 ghc Games/RockPaperScissors.hs
+
+#A bit difficute
+ghc Games/CrashyBird.hs 
+ghc Games/KarelTheLED.hs
+ghc Games/MagicButtonTrick.hs
+ghc Games/ReactionTime.hs
+ghc Games/Salute.hs
+ghc Games/SnapTheDot.hs

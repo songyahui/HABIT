@@ -14,4 +14,15 @@ basic.forever(function () {
 --}
 
 import MicroBit
-main  = print 1
+
+
+type Model = Icon
+
+
+view :: Model -> MicroBit ()
+view model = 
+    microbit [
+        buttonPressed (onButtonA ()) [
+            leds () ". # . # . # # # # # # # # # # . # # # . . . # . ."
+        ]
+    ]

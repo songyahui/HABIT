@@ -5,5 +5,16 @@ basic.forever(function () {
 })
 --}
 
+
 import MicroBit
-main  = print 1
+
+type Model = Icon
+
+
+view :: MicroBit ()
+view = 
+    forever 
+        [
+            leds () "Hello!"
+            , leds () "Test!"
+        ]

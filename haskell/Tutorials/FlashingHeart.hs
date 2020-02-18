@@ -9,5 +9,19 @@ basic.forever(function () {
         `)
 })
 --}
+
 import MicroBit
-main  = print 1
+
+
+type Model = Icon
+
+view :: MicroBit ()
+view = leds () ". # . # . # # # # # # # # # # . # # # . . . # . ."
+
+
+view1 :: MicroBit ()
+view1 = 
+    forever 
+        [
+            leds () ". # . # . # # # # # # # # # # . # # # . . . # . ."
+        ]

@@ -8,4 +8,23 @@ basic.forever(function () {
 })
 --}
 import MicroBit
-main  = print 1
+
+
+type Model = Int
+
+data Msg = None | GetRandomNum
+
+update :: Msg -> Model -> Model
+update msg model = 
+    case msg of 
+        None -> model 
+        GetRandomNum -> randomRange 0 10 
+
+view :: Model -> MicroBit Msg
+view model = 
+    microbit [
+        pinPressed (onPin0 GetRandomNum) [
+            leds None (fromInt model)
+            ,leds None ("LOVE METER")
+        ]
+    ]

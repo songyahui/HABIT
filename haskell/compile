@@ -1,11 +1,11 @@
 #simple
-ghc -i MicroBit Tutorials/Dice.hs
-ghc -i MicroBit Tutorials/FlashingHeart.hs
-ghc -i MicroBit Tutorials/LoveMeter.hs
-ghc -i MicroBit Tutorials/MicroChat.hs
-ghc -i MicroBit Tutorials/MicroChatGroup1.hs
-ghc -i MicroBit Tutorials/NameTag.hs
-ghc -i MicroBit Tutorials/SmileyButtonsA.hs
-ghc -i MicroBit Tutorials/SmileyButtonsAB.hs
-ghc -i MicroBit Games/CoinFlipper.hs
-ghc -i MicroBit Games/RockPaperScissors.hs
+ghc Tutorials/Dice.hs
+ghc Tutorials/FlashingHeart.hs
+ghc Tutorials/LoveMeter.hs
+ghc Tutorials/MicroChat.hs
+ghc Tutorials/MicroChatGroup1.hs
+ghc Tutorials/NameTag.hs
+ghc Tutorials/SmileyButtonsA.hs
+ghc Tutorials/SmileyButtonsAB.hs
+ghc Games/CoinFlipper.hs
+ghc Games/RockPaperScissors.hs

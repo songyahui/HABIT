@@ -34,4 +34,28 @@ basic.forever(function () {
 --}
 
 import MicroBit
-main  = print 1
+
+type Model = Int 
+
+inite :: Model
+inite = 0
+
+data Msg = None | GetRandom Int
+
+update :: Msg -> Model -> Model 
+update msg model = 
+    case msg of 
+        None -> model
+        GetRandom n  -> n
+
+
+view :: Model -> MicroBit Msg
+view model = 
+    gesture (onShake (GetRandom model)) [
+        if model == 0  then 
+            leds None ". . # . . . . # . .. . # . . . . # . . . . # . ."
+        else if model == 1 then 
+            leds None "# . . . . . # . . . . . # . . . . . # . . . . . #"
+        else 
+            leds None ". . . . # . . . # . . . # . . . # . . . # . . . ."
+    ]

@@ -16,4 +16,19 @@ basic.forever(function () {
 --}
 
 import MicroBit
-main  = print 1
+
+
+type Model = Bool 
+
+inite :: Model
+inite = randomBoolean
+     
+view :: Model -> MicroBit ()
+view model = 
+    buttonPressed (onButtonA ()) [
+            leds () (getIcon SmallDiamond)
+            , leds () (getIcon Diamond)
+            , leds () (getIcon SmallDiamond)
+            , leds () (getIcon Diamond) 
+            , if model then leds () (getIcon Yes) else leds () (getIcon No) 
+    ]

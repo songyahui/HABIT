@@ -9,7 +9,6 @@ data Icon = String
 
 data IconNames = SmallDiamond | Diamond | Yes | No | NoPattern
 
-
 -- ------------------------------------------
 onStart :: [MicroBit msg] -> MicroBit msg
 onStart a = (a!!0)

@@ -6,3 +6,5 @@ rm Tutorials/*.o
 
 rm Games/*.hi
 rm Games/*.o
+
+find . -type f  ! -name "*.*"  -delete

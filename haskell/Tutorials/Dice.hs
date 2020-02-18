@@ -22,15 +22,5 @@ update msg model =
 
 view :: Model -> MicroBit Msg
 view model = 
-    microbit [
-        leds None (fromInt model)
-        , gesture (onShake GetRandomNum) []
-    ]
+    gesture (onShake GetRandomNum) [leds None (fromInt model)]
     
-
-    {--
-    fun :: Signal Int
-fun = Basic.showNumber (Math.randomRange 0 10)
-
-main = microBit (Input.onGesture Shake fun)
-    --}

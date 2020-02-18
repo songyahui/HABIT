@@ -21,6 +21,6 @@ view :: MicroBit ()
 view = 
     microbit [
         buttonPressed (onButtonAB ()) [
-            leds () ". # . # . # # # # # # # # # # . # # # . . . # . ."
+            showstring () ". # . # . # # # # # # # # # # . # # # . . . # . ."
         ]
     ]

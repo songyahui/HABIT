@@ -33,10 +33,8 @@ radio a b =  (b!!0)
 
 -------------------------------------------
 
-
 onShake :: msg -> Attribute msg
 onShake a = Attribute a
-
 
 onLogoUp :: msg -> Attribute msg
 onLogoUp a = Attribute a
@@ -94,8 +92,11 @@ onReceivedString a = Attribute a
 
 -------------------------------------------
 
-leds :: msg -> String -> MicroBit msg
-leds m str =  MicroBit m 
+showstring :: msg -> String -> MicroBit msg
+showstring m str =  MicroBit m 
+
+showicon :: msg -> IconNames -> MicroBit msg
+showicon m i =  MicroBit m
 
 setGroup :: msg -> Int -> MicroBit msg
 setGroup m num =  MicroBit m 
@@ -108,22 +109,14 @@ sendString m str =  MicroBit m
 microbit :: [MicroBit msg] -> MicroBit msg
 microbit li = (li !! 1)
 
-
-
 randomRange ::Int -> Int -> Int 
 randomRange n1 n2 = 1
 
 randomBoolean :: Bool
 randomBoolean = True
 
-
 fromInt :: Int -> String 
 fromInt n = show n
-
-
-getIcon :: IconNames -> String
-getIcon a = ""
-
 
 main = print 1
 

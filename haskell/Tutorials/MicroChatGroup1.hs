@@ -31,11 +31,11 @@ view model =
     microbit [
         buttonPressed (onButtonA None) [
             setGroup None 1
-            , (sendString None ("Yo"))
+            , (showstring None ("Yo"))
             ]
         ,radio (onReceivedString (ReceivedString model)) [
             setGroup None 1
-            , leds None model
+            , showstring None model
         ]
     ]
 

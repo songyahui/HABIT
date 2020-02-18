@@ -53,9 +53,9 @@ view :: Model -> MicroBit Msg
 view model = 
     gesture (onShake (GetRandom model)) [
         if model == 0  then 
-            leds None ". . # . . . . # . .. . # . . . . # . . . . # . ."
+            showstring None ". . # . . . . # . .. . # . . . . # . . . . # . ."
         else if model == 1 then 
-            leds None "# . . . . . # . . . . . # . . . . . # . . . . . #"
+            showstring None "# . . . . . # . . . . . # . . . . . # . . . . . #"
         else 
-            leds None ". . . . # . . . # . . . # . . . # . . . # . . . ."
+            showstring None ". . . . # . . . # . . . # . . . # . . . # . . . ."
     ]

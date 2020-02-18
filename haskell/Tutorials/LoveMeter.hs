@@ -24,7 +24,7 @@ view :: Model -> MicroBit Msg
 view model = 
     microbit [
         pinPressed (onPin0 GetRandomNum) [
-            leds None (fromInt model)
-            ,leds None ("LOVE METER")
+            showstring None (fromInt model)
+            ,showstring None ("LOVE METER")
         ]
     ]

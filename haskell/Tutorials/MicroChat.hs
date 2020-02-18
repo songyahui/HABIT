@@ -28,9 +28,9 @@ update msg model =
 view :: Model -> MicroBit Msg
 view model = 
     microbit [
-        buttonPressed (onButtonA None) [(sendString None ("Yo"))]
+        buttonPressed (onButtonA None) [(showstring None ("Yo"))]
         ,radio (onReceivedString (ReceivedString model)) [
-            leds None model
+            showstring None model
         ]
     ]
 

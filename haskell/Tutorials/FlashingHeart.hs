@@ -16,12 +16,12 @@ import MicroBit
 type Model = Icon
 
 view :: MicroBit ()
-view = leds () ". # . # . # # # # # # # # # # . # # # . . . # . ."
+view = showstring () ". # . # . # # # # # # # # # # . # # # . . . # . ."
 
 
 view1 :: MicroBit ()
 view1 = 
     forever 
         [
-            leds () ". # . # . # # # # # # # # # # . # # # . . . # . ."
+            showstring () ". # . # . # # # # # # # # # # . # # # . . . # . ."
         ]

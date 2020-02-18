@@ -22,5 +22,5 @@ update msg model =
 
 view :: Model -> MicroBit Msg
 view model = 
-    gesture (onShake GetRandomNum) [leds None (fromInt model)]
+    gesture (onShake GetRandomNum) [showstring None (fromInt model)]
     

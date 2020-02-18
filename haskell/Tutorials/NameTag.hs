@@ -15,6 +15,6 @@ view :: MicroBit ()
 view = 
     forever 
         [
-            leds () "Hello!"
-            , leds () "Test!"
+            showstring () "Hello!"
+            , showstring () "Test!"
         ]

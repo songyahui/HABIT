@@ -1,4 +1,4 @@
-# Langugae-Abstraction-for-Micro-Bit
+# HABIT
 Langugae Abstraction for Micro:Bit
 
 

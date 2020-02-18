@@ -35,23 +35,26 @@ basic.forever(function () {
 
 import MicroBit
 
+{--@ n : Int | n > 0 @--}
 type Model = Int 
 
+
 inite :: Model
-inite = 0
+inite = 0 
 
-data Msg = None | GetRandom Int
+data Msg = None | GetRandom
 
+{--@ True -> n : Int | n > 0 @--}
 update :: Msg -> Model -> Model 
 update msg model = 
     case msg of 
         None -> model
-        GetRandom n  -> n
+        GetRandom  -> randomRange 0 3
 
 
 view :: Model -> MicroBit Msg
 view model = 
-    gesture (onShake (GetRandom model)) [
+    gesture (onShake (GetRandom)) [
         if model == 0  then 
             showleds None ". . # . . . . # . .. . # . . . . # . . . . # . ."
         else if model == 1 then 

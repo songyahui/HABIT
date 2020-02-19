@@ -8,6 +8,12 @@ data Icon = String
 
 data IconNames = SmallDiamond | Diamond | Yes | No | NoPattern
 
+data Dimension = X | Y | Z | Strangth
+
+type Sprite = (Int, Int)
+
+type Score = Int
+
 --------------------------------------------
 
 onStart :: [msg] -> [MicroBit msg] -> MicroBit msg
@@ -43,7 +49,6 @@ buttonAPressed a b =  (b!!0)
 buttonBPressed :: [ msg] -> [MicroBit msg] -> MicroBit msg
 buttonBPressed a b =  (b!!0)
 
-
 buttonABPressed :: [ msg] -> [MicroBit msg] -> MicroBit msg
 buttonABPressed a b =  (b!!0)
 
@@ -75,7 +80,21 @@ sendString m str =  MicroBit (m !! 0)
 pause :: [msg] -> Int -> MicroBit msg
 pause m num =  MicroBit (m !! 0)
 
+gameOver :: [msg]  -> MicroBit msg
+gameOver m =  MicroBit (m !! 0)
+
+
+addScore :: [msg] -> Int  -> MicroBit msg
+addScore m s =  MicroBit (m !! 0)
+
+ifOnEdgeBounce :: [msg]  -> MicroBit msg
+ifOnEdgeBounce m =  MicroBit (m !! 0)
+
 -------------------------------------
+
+
+spritemove:: Sprite -> Int -> Sprite 
+spritemove s n = s
 
 microbit :: [MicroBit msg] -> MicroBit msg
 microbit li = (li !! 1)
@@ -88,5 +107,11 @@ randomBoolean = True
 
 fromInt :: Int -> String 
 fromInt n = show n
+
+math_abs :: Float -> Int 
+math_abs f =  0
+
+magneticForce :: Dimension -> Float
+magneticForce d =  0.0
 
 main = print 1

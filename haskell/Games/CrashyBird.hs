@@ -1,28 +1,42 @@
 import MicroBit
 
 
-type Model = (Int, Int, Int, Int, Int, Int)
+type Model = (Int, Int, Int, Int, Int, Int, [(Int, Int)])
 
 inite :: Model 
-inite = (0, 2, 300, 0, 0 , 0)
+inite = (0, 2, 300, 0, 0 , 0, [])
 
 data Msg = None | GoDown | GoUp | TickPlus
 
-
 update :: Msg -> Model -> Model
-update msg (sprite_x, sprite_y, sprite_blink, emptyObstacleY, ticks, index ) = 
+update msg (sprite_x, sprite_y, sprite_blink, emptyObstacleY, ticks, index, obstacles ) = 
     case msg of
-        GoDown -> (sprite_x, sprite_y - 1, sprite_blink , emptyObstacleY, ticks, index )
-        GoUp -> (sprite_x, sprite_y + 1, sprite_blink , emptyObstacleY, ticks, index )
-        TickPlus -> (sprite_x, sprite_y, sprite_blink , emptyObstacleY, ticks + 1, index )
-
-
+        GoDown -> (sprite_x, sprite_y - 1, sprite_blink , emptyObstacleY, ticks, index , obstacles)
+        GoUp -> (sprite_x, sprite_y + 1, sprite_blink , emptyObstacleY, ticks, index , obstacles)
+        TickPlus -> 
+            let helper lio = (case lio of 
+                    [] -> [] 
+                    (x, y):xs -> if x==0 then helper xs
+                                 else xs )
+            in 
+            let obstacles_ = helper obstacles in 
+            let obstacles' = foldr (\ (x, y) acc ->  (x-1, y) : acc )  [] obstacles_ in 
+            let obstacles'' = (if True then 
+                    let emptyObstacleY = randomRange 0 4 in
+                    foldr (\x acc -> (4, x): acc) obstacles' [0, 1, 2, 3, 4] 
+                else obstacles') in 
+            let ticks' = ticks + 1 in 
+            (sprite_x, sprite_y, sprite_blink , emptyObstacleY, ticks', index, obstacles'' )
+       
 view :: Model -> MicroBit Msg
-view (sprite_x, sprite_y, sprite_blink , emptyObstacleY, ticks, index ) =  
+view (sprite_x, sprite_y, sprite_blink , emptyObstacleY, ticks, index, obstacles ) =  
     microbit [
         buttonAPressed [GoDown] []
         , buttonBPressed [GoUp] []
-        ,forever [TickPlus] [pause [] 1000]
+        , forever [TickPlus] [
+            let result = foldr (\(x,y) acc-> if x == sprite_x && y == sprite_y then True else (acc || False)) False  obstacles in 
+            if result then gameOver []
+            else pause [] 1000]
     ] 
 
 

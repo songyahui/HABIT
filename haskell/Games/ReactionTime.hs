@@ -1,6 +1,25 @@
 import MicroBit
 
 
+type Model = (Int, Int, Bool, Bool)
+
+data Msg = P0Pressed | Unknown 
+
+update :: Msg -> Model -> Model
+update msg (start, end, false_start, running) = 
+    case msg of
+        P0Pressed -> let 
+
+view :: Model -> MicroBit Msg
+view (start, end, false_start, running) = 
+    microbit [
+        pin0Pressed [P0Pressed] [
+
+        ]
+
+    ]
+
+
 
 
 {--let start = 0
@@ -12,8 +31,7 @@ input.onPinPressed(TouchPin.P0, () => {
     basic.showNumber(2)
     basic.showNumber(1)
     basic.clearScreen()
-    running = false
-    false_start = false
+c
     basic.pause(1000 + Math.randomRange(0, 2000))
     if (!(false_start)) {
         start = input.runningTime()

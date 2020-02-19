@@ -1,6 +1,31 @@
 import MicroBit
 
 
+type Model = (Int, Int, Int, Int, Int, Int)
+
+inite :: Model 
+inite = (0, 2, 300, 0, 0 , 0)
+
+data Msg = None | GoDown | GoUp | TickPlus
+
+
+update :: Msg -> Model -> Model
+update msg (sprite_x, sprite_y, sprite_blink, emptyObstacleY, ticks, index ) = 
+    case msg of
+        GoDown -> (sprite_x, sprite_y - 1, sprite_blink , emptyObstacleY, ticks, index )
+        GoUp -> (sprite_x, sprite_y + 1, sprite_blink , emptyObstacleY, ticks, index )
+        TickPlus -> (sprite_x, sprite_y, sprite_blink , emptyObstacleY, ticks + 1, index )
+
+
+view :: Model -> MicroBit Msg
+view (sprite_x, sprite_y, sprite_blink , emptyObstacleY, ticks, index ) =  
+    microbit [
+        buttonAPressed [GoDown] []
+        , buttonBPressed [GoUp] []
+        ,forever [TickPlus] [pause [] 1000]
+    ] 
+
+
 
 
 {--let ticks = 0

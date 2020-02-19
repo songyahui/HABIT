@@ -20,7 +20,7 @@ import MicroBit
 view :: MicroBit ()
 view = 
     microbit [
-        buttonPressed (onButtonAB ()) [
-            showleds () ". # . # . # # # # # # # # # # . # # # . . . # . ."
+        buttonABPressed [] [
+            showleds [] ". # . # . # # # # # # # # # # . # # # . . . # . ."
         ]
     ]

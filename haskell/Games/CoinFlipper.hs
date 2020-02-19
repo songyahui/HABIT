@@ -25,10 +25,10 @@ inite = randomBoolean
      
 view :: Model -> MicroBit ()
 view model = 
-    buttonPressed (onButtonA ()) [
-            showicon () SmallDiamond
-            , showicon () Diamond
-            , showicon () SmallDiamond
-            , showicon () Diamond
-            , if model then showicon ()  Yes else showicon ()  No
+    buttonAPressed [] [
+            showicon [] SmallDiamond
+            , showicon [] Diamond
+            , showicon [] SmallDiamond
+            , showicon [] Diamond
+            , if model then showicon []  Yes else showicon []  No
     ]

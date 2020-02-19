@@ -12,19 +12,18 @@ import MicroBit
 
 type Model = Int
 
-data Msg = None | GetRandomNum
+data Msg = GetRandomNum
 
 update :: Msg -> Model -> Model
 update msg model = 
     case msg of 
-        None -> model 
         GetRandomNum -> randomRange 0 10 
 
 view :: Model -> MicroBit Msg
 view model = 
     microbit [
-        pinPressed (onPin0 GetRandomNum) [
-            showstring None (fromInt model)
-            ,showstring None ("LOVE METER")
+        pin0Pressed [GetRandomNum] [
+            showstring [] (fromInt model)
+            ,showstring [] ("LOVE METER")
         ]
     ]

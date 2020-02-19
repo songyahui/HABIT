@@ -17,20 +17,19 @@ type Model = String
 inite :: Model
 inite = ""
 
-data Msg = None | ReceivedString String 
+data Msg = ReceivedString String 
 
 update :: Msg -> Model -> Model
 update msg model = 
     case msg of 
-        None -> model 
         ReceivedString str -> str
      
 view :: Model -> MicroBit Msg
 view model = 
     microbit [
-        buttonPressed (onButtonA None) [(showstring None ("Yo"))]
-        ,radio (onReceivedString (ReceivedString model)) [
-            showstring None model
+        buttonAPressed [] [(showstring [] ("Yo"))]
+        ,radioonReceivedString [ ReceivedString model] [
+            showstring [] model
         ]
     ]
 

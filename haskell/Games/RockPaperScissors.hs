@@ -54,11 +54,11 @@ update msg model =
 
 view :: Model -> MicroBit Msg
 view model = 
-    gesture (onShake (GetRandom)) [
+    gestureonShake [GetRandom] [
         if model == 0  then 
-            showleds None ". . # . . . . # . .. . # . . . . # . . . . # . ."
+            showleds [] ". . # . . . . # . .. . # . . . . # . . . . # . ."
         else if model == 1 then 
-            showleds None "# . . . . . # . . . . . # . . . . . # . . . . . #"
+            showleds [] "# . . . . . # . . . . . # . . . . . # . . . . . #"
         else 
-            showleds None ". . . . # . . . # . . . # . . . # . . . # . . . ."
+            showleds [] ". . . . # . . . # . . . # . . . # . . . # . . . ."
     ]

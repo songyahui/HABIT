@@ -12,15 +12,14 @@ import MicroBit
 
 type Model = Int
 
-data Msg = None | GetRandomNum
+data Msg = GetRandomNum
 
 update :: Msg -> Model -> Model
 update msg model = 
     case msg of 
-        None -> model 
         GetRandomNum -> randomRange 0 10 
 
 view :: Model -> MicroBit Msg
 view model = 
-    gesture (onShake GetRandomNum) [showstring None (fromInt model)]
+    gestureonShake [GetRandomNum] [showstring [] (fromInt model)]
     

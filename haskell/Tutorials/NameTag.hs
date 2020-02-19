@@ -13,8 +13,8 @@ type Model = Icon
 
 view :: MicroBit ()
 view = 
-    forever 
+    forever []
         [
-            showstring () "Hello!"
-            , showstring () "Test!"
+            showstring [] "Hello!"
+            , showstring [] "Test!"
         ]

@@ -21,14 +21,23 @@ import MicroBit
 type Model = Bool 
 
 inite :: Model
-inite = randomBoolean
+inite = True
+
+data Msg = GetRandomBool
+
+update :: Msg -> Model -> Model
+update msg model = 
+    case msg of 
+        GetRandomBool -> randomBoolean
      
-view :: Model -> MicroBit ()
+view :: Model -> MicroBit
 view model = 
-    buttonAPressed [] [
-            showicon [] SmallDiamond
-            , showicon [] Diamond
-            , showicon [] SmallDiamond
-            , showicon [] Diamond
-            , if model then showicon []  Yes else showicon []  No
+    buttonA [onPressed GetRandomBool] [
+            showicon SmallDiamond
+            , showicon Diamond
+            , showicon SmallDiamond
+            , showicon Diamond
+            , if model then showicon Yes else showicon No
     ]
+
+main = frameWork inite view update

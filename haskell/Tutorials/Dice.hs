@@ -12,6 +12,9 @@ import MicroBit
 
 type Model = Int
 
+inite :: Model
+inite = 0
+
 data Msg = GetRandomNum
 
 update :: Msg -> Model -> Model
@@ -19,7 +22,8 @@ update msg model =
     case msg of 
         GetRandomNum -> randomRange 0 10 
 
-view :: Model -> MicroBit Msg
+view :: Model -> MicroBit
 view model = 
-    gestureonShake [GetRandomNum] [showstring [] (fromInt model)]
-    
+    gesture [onShake GetRandomNum] [shownumber model]
+
+main = frameWork inite view update

@@ -18,25 +18,25 @@ type Model = String
 inite :: Model
 inite = ""
 
-data Msg = ReceivedString String 
+data Msg = ReceivedString String | None
 
 update :: Msg -> Model -> Model
 update msg model = 
     case msg of 
         ReceivedString str -> str
-     
-view :: Model -> MicroBit Msg
+ 
+view :: Model -> MicroBit
 view model = 
     microbit [
-        buttonAPressed [] [
-            setGroup [] 1
-            , (showstring [] ("Yo"))
-            ]
-        ,radioonReceivedString [ReceivedString model] [
-            setGroup [] 1
-            , showstring [] model
-        ]
+        buttonA [onPressed None] [setGroup 1, sendString "Yo"]
+        ,radio [onReceivedString ReceivedString] [setGroup 1, showstring model]
     ]
+
+main = frameWork inite view update
+
+ 
+
+
 
 
 

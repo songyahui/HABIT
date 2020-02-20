@@ -52,13 +52,15 @@ update msg model =
         GetRandom  -> randomRange 0 3
 
 
-view :: Model -> MicroBit Msg
+view :: Model -> MicroBit
 view model = 
-    gestureonShake [GetRandom] [
+    gesture [onShake GetRandom] [
         if model == 0  then 
-            showleds [] ". . # . . . . # . .. . # . . . . # . . . . # . ."
+            showLeds  ". . # . . . . # . .. . # . . . . # . . . . # . ."
         else if model == 1 then 
-            showleds [] "# . . . . . # . . . . . # . . . . . # . . . . . #"
+            showLeds "# . . . . . # . . . . . # . . . . . # . . . . . #"
         else 
-            showleds [] ". . . . # . . . # . . . # . . . # . . . # . . . ."
+            showLeds ". . . . # . . . # . . . # . . . # . . . # . . . ."
     ]
+
+main = frameWork inite view update

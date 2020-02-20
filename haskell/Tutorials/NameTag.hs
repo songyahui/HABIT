@@ -8,13 +8,8 @@ basic.forever(function () {
 
 import MicroBit
 
-type Model = Icon
-
-
-view :: MicroBit ()
-view = 
-    forever []
+main  = forever
         [
-            showstring [] "Hello!"
-            , showstring [] "Test!"
+            showstring "Hello!"
+            , showstring "Test!"
         ]

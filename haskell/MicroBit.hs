@@ -1,6 +1,12 @@
 module MicroBit where
 
-data MicroBit msg = MicroBit msg
+type MicroBit = IO ()
+
+data Signal msg = Signal msg
+
+
+frameWork :: model -> (model -> IO ()) -> (msg -> model -> model) -> IO ()
+frameWork inite view update = return ()
 
 --------------------------------------------
 
@@ -16,88 +22,106 @@ type Score = Int
 
 --------------------------------------------
 
-onStart :: [msg] -> [MicroBit msg] -> MicroBit msg
-onStart att a = (a!!0)
+microbit :: [MicroBit] -> MicroBit
+microbit li = (li !! 1)
 
-forever :: [msg] -> [MicroBit msg] -> MicroBit msg
-forever att a = (a!!0)
+onStart :: [MicroBit] -> MicroBit
+onStart a = (a!!0)
 
-gestureonShake :: [ msg] -> [MicroBit msg] -> MicroBit msg
-gestureonShake a b =  (b!!0)
+forever :: [MicroBit] -> MicroBit
+forever a = (a!!0)
 
-pin0Pressed :: [ msg] -> [MicroBit msg] -> MicroBit msg
-pin0Pressed a b =  (b!!0)
+-----------------------------------
+-------- MicroBit Input Device ----------
 
-pin1Pressed :: [ msg] -> [MicroBit msg] -> MicroBit msg
-pin1Pressed a b =  (b!!0)
+leds:: [Signal msg] -> [MicroBit] -> MicroBit
+leds a b = b !! 0
 
-pin2Pressed :: [ msg] -> [MicroBit msg] -> MicroBit msg
-pin2Pressed a b =  (b!!0)
+pin0 ::[Signal msg] -> [MicroBit] -> MicroBit
+pin0 a b = b !! 0
 
-pin0Released :: [ msg] -> [MicroBit msg] -> MicroBit msg
-pin0Released a b =  (b!!0)
+pin1 ::[Signal msg] -> [MicroBit] -> MicroBit
+pin1 a b = b !! 0
 
-pin1Released :: [ msg] -> [MicroBit msg] -> MicroBit msg
-pin1Released a b =  (b!!0)
+pin2 ::[Signal msg] -> [MicroBit] -> MicroBit
+pin2 a b = b !! 0
 
-pin2Released :: [ msg] -> [MicroBit msg] -> MicroBit msg
-pin2Released a b =  (b!!0)
+buttonA ::[Signal msg] -> [MicroBit] -> MicroBit
+buttonA a b = b !! 0
 
-buttonAPressed :: [ msg] -> [MicroBit msg] -> MicroBit msg
-buttonAPressed a b =  (b!!0)
+buttonB ::[Signal msg] -> [MicroBit] -> MicroBit
+buttonB a b = b !! 0
 
-buttonBPressed :: [ msg] -> [MicroBit msg] -> MicroBit msg
-buttonBPressed a b =  (b!!0)
+buttonAB ::[Signal msg] -> [MicroBit] -> MicroBit
+buttonAB a b = b !! 0
 
-buttonABPressed :: [ msg] -> [MicroBit msg] -> MicroBit msg
-buttonABPressed a b =  (b!!0)
+gesture ::[Signal msg] -> [MicroBit] -> MicroBit
+gesture a b = b !! 0
 
-radioonReceivedString :: [ msg] -> [MicroBit msg] -> MicroBit msg
-radioonReceivedString a b =  (b!!0)
+radio ::[Signal msg] -> [MicroBit] -> MicroBit
+radio a b = b !! 0
+
+-----------------------------------
+-------- MicroBit Event -----------
+
+onReceivedString :: (String -> msg) -> Signal msg
+onReceivedString fun = Signal (fun "a")
+
+onShake :: msg -> Signal msg
+onShake m = Signal (m)
+
+onPressed :: msg -> Signal msg
+onPressed m = Signal (m)
+
+onReleased :: msg -> Signal msg
+onReleased m = Signal (m)
 
 -------------------------------------------
 
--------------------------------------------
+-----------------------------------
+-------- MicroBit IO -----------
 
-showstring :: [msg] -> String -> MicroBit msg
-showstring m str =  MicroBit (m !! 0)
+showLeds :: String -> MicroBit
+showLeds str =  print str
 
-showleds :: [msg] -> String -> MicroBit msg
-showleds m str =  MicroBit (m !! 0)
+showstring :: String -> MicroBit
+showstring str =  print str
 
-shownumber :: [msg] -> Int -> MicroBit msg
-shownumber m num =  MicroBit (m !! 0)
+shownumber :: Int -> MicroBit
+shownumber num =  print (show num)
 
-showicon :: [msg] -> IconNames -> MicroBit msg
-showicon m i =  MicroBit (m !! 0)
+showicon :: IconNames -> MicroBit
+showicon icon =  print "a"
 
-setGroup :: [msg] -> Int -> MicroBit msg
-setGroup m num =  MicroBit (m !! 0)
+setGroup :: Int -> MicroBit
+setGroup num =  return  ()
 
-sendString ::[msg] -> String -> MicroBit msg
-sendString m str =  MicroBit (m !! 0)
+sendString :: String -> MicroBit
+sendString str =  print "a"
 
-pause :: [msg] -> Int -> MicroBit msg
-pause m num =  MicroBit (m !! 0)
+pause :: Int -> MicroBit
+pause num =  print (show num)
 
-gameOver :: [msg]  -> MicroBit msg
-gameOver m =  MicroBit (m !! 0)
+gameOver ::  MicroBit
+gameOver =  return  ()
 
+addScore :: Int  -> MicroBit
+addScore num =  print (show num)
 
-addScore :: [msg] -> Int  -> MicroBit msg
-addScore m s =  MicroBit (m !! 0)
-
-ifOnEdgeBounce :: [msg]  -> MicroBit msg
-ifOnEdgeBounce m =  MicroBit (m !! 0)
+ifOnEdgeBounce ::  MicroBit
+ifOnEdgeBounce =  return ()
 
 -------------------------------------
+
+-----------------------------------
+-------- MicroBit Game -----------
 
 
 spritemove:: Sprite -> Int -> Sprite 
 spritemove s n = s
 
-microbit :: [MicroBit msg] -> MicroBit msg
-microbit li = (li !! 1)
+-----------------------------------
+-------- MicroBit Math -----------
 
 randomRange ::Int -> Int -> Int 
 randomRange n1 n2 = 1
@@ -114,4 +138,4 @@ math_abs f =  0
 magneticForce :: Dimension -> Float
 magneticForce d =  0.0
 
-main = print 1
+

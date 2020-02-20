@@ -13,15 +13,6 @@ basic.forever(function () {
 import MicroBit
 
 
-type Model = Icon
+main :: MicroBit
+main = showstring ". # . # . # # # # # # # # # # . # # # . . . # . ."
 
-view :: MicroBit ()
-view = showleds [] ". # . # . # # # # # # # # # # . # # # . . . # . ."
-
-
-view1 :: MicroBit ()
-view1 = 
-    forever []
-        [
-            showleds [] ". # . # . # # # # # # # # # # . # # # . . . # . ."
-        ]

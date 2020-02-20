@@ -15,12 +15,9 @@ basic.forever(function () {
 
 import MicroBit
 
-
-
-view :: MicroBit ()
-view = 
+main  = 
     microbit [
-        buttonABPressed [] [
-            showleds [] ". # . # . # # # # # # # # # # . # # # . . . # . ."
+        buttonAB [onPressed ()] [
+            showLeds ". # . # . # # # # # # # # # # . # # # . . . # . ."
         ]
     ]

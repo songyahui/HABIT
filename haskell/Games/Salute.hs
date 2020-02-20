@@ -17,18 +17,18 @@ update msg (player1Score, player2Score) =
 view :: Model -> MicroBit
 view (player1Score, player2Score) = 
      microbit[
-         buttonA [onPressed Player1Gain] []
-         , buttonB [onPressed Player2Gain] []
-         , buttonAB [onPressed] [
+         buttonA [onPressed Player1Gain] [], 
+         buttonB [onPressed Player2Gain] [], 
+         buttonAB [onPressed] [
              if player1Score == player2Score then showstring "TIE"
              else if player1Score > player2Score then showstring "Player 1"
-             else showstring "Player 2"
-             , shownumber(max player1Score player2Score)
-         ]
-         , gesture [onLogoDown Reset] [
-             showstring "Reset"
-             , pause 1000
-             , clearScreen
+             else showstring "Player 2", 
+                  shownumber(max player1Score player2Score)
+         ], 
+         gesture [onLogoDown Reset] [
+             showstring "Reset", 
+             pause 1000, 
+             clearScreen
          ]
      ]
 

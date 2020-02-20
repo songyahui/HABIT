@@ -9,6 +9,15 @@ ivu_FrameWork inite view update = return ()
 iv_FrameWork :: model -> (model -> IO ()) ->  IO ()
 iv_FrameWork inite view = return ()
 
+(@>) :: (model->f) -> f -> ()
+f @> d = ()
+
+(<^>) :: model -> [()] -> model
+m <^> tu = m
+
+(#) :: model -> (model->f)  -> f
+m # f = f m 
+
 
 --------------------------------------------
 

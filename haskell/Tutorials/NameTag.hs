@@ -10,6 +10,6 @@ import MicroBit
 
 main  = forever []
         [
-            showstring "Hello!"
-            , showstring "Test!"
+            showstring "Hello!",
+            showstring "Test!"
         ]

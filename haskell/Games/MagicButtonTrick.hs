@@ -1,34 +1,32 @@
 import MicroBit
 
 
-type Model = (Int, Bool)
+data Model = Model {force:: Int, isSwitched::Bool}
 
 inite :: Model
-inite = (0, False)
+inite = Model 0 False
 
 data Msg = GetMag
 
 update :: Msg -> Model -> Model 
-update msg (force, isSwitched) = 
+update msg model  = 
     case msg of 
         GetMag -> 
             let force' = math_abs (magneticForce Strangth) in 
             let isSwitched' = force' > 100 in 
-            (force', isSwitched')
+            model <^> [force @>force', isSwitched @> isSwitched']
                 
 
 view :: Model -> MicroBit
-view (force, isSwitched) =
+view model =
     microbit [
-        forever [GetMag] []
-        ,
+        forever [GetMag] [],
         buttonA [onPressed ()] [
-            if isSwitched then showstring "B"
+            if model # isSwitched then showstring "B"
             else showstring "A"
-        ]
-        ,
+        ],
         buttonB [onPressed ()] [
-            if isSwitched then showstring "A"
+            if model # isSwitched then showstring "A"
             else showstring "B"
         ]
 

@@ -42,13 +42,12 @@ type Model = Int
 inite :: Model
 inite = 0 
 
-data Msg = None | GetRandom
+data Msg = GetRandom
 
 {--@ True -> n : Int | n > 0 @--}
 update :: Msg -> Model -> Model 
 update msg model = 
     case msg of 
-        None -> model
         GetRandom  -> randomRange 0 3
 
 

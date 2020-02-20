@@ -10,20 +10,20 @@ basic.forever(function () {
 
 import MicroBit
 
-type Model = Int
+data Model = Model {randomNum::Int}
 
 inite :: Model
-inite = 0
+inite = Model 0
 
 data Msg = GetRandomNum
 
 update :: Msg -> Model -> Model
 update msg model = 
     case msg of 
-        GetRandomNum -> randomRange 0 10 
+        GetRandomNum -> model <^> [randomNum @> (randomRange 0 10)]
 
 view :: Model -> MicroBit
 view model = 
-    gesture [onShake GetRandomNum] [shownumber model]
+    gesture [onShake GetRandomNum] [shownumber (model # randomNum )]
 
 main = ivu_FrameWork inite view update

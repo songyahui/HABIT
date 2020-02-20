@@ -11,12 +11,11 @@ view (x, y) =
         buttonA [] [
             if x == 2 then addScore 1
             else gameOver
-        ]
-        ,
+        ],
         forever [] [
-            spritemove 1
-            , pause 100
-            , ifOnEdgeBounce
+            spritemove 1, 
+            pause 100, 
+            ifOnEdgeBounce
         ] 
     ]
 

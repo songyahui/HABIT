@@ -63,4 +63,4 @@ view model =
             showLeds ". . . . # . . . # . . . # . . . # . . . # . . . ."
     ]
 
-main = frameWork inite view update
+main = ivu_FrameWork inite view update

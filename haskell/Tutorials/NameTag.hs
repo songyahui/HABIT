@@ -8,7 +8,7 @@ basic.forever(function () {
 
 import MicroBit
 
-main  = forever
+main  = forever []
         [
             showstring "Hello!"
             , showstring "Test!"

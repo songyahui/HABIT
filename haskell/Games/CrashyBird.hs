@@ -1,18 +1,18 @@
 import MicroBit
 
 
-type Model = (Int, Int, Int, Int, Int, Int, [(Int, Int)])
+type Model = (Sprite, Int, Int, Int, Int, [(Int, Int)])
 
 inite :: Model 
-inite = (0, 2, 300, 0, 0 , 0, [])
+inite = ((0, 2), 300, 0, 0 , 0, [])
 
 data Msg = None | GoDown | GoUp | TickPlus
 
 update :: Msg -> Model -> Model
-update msg (sprite_x, sprite_y, sprite_blink, emptyObstacleY, ticks, index, obstacles ) = 
+update msg ((sprite_x, sprite_y), sprite_blink, emptyObstacleY, ticks, index, obstacles ) = 
     case msg of
-        GoDown -> (sprite_x, sprite_y - 1, sprite_blink , emptyObstacleY, ticks, index , obstacles)
-        GoUp -> (sprite_x, sprite_y + 1, sprite_blink , emptyObstacleY, ticks, index , obstacles)
+        GoDown -> ((sprite_x, sprite_y - 1), sprite_blink , emptyObstacleY, ticks, index , obstacles)
+        GoUp -> ((sprite_x, sprite_y + 1), sprite_blink , emptyObstacleY, ticks, index , obstacles)
         TickPlus -> 
             let helper lio = (case lio of 
                     [] -> [] 
@@ -26,20 +26,20 @@ update msg (sprite_x, sprite_y, sprite_blink, emptyObstacleY, ticks, index, obst
                     foldr (\x acc -> (4, x): acc) obstacles' [0, 1, 2, 3, 4] 
                 else obstacles') in 
             let ticks' = ticks + 1 in 
-            (sprite_x, sprite_y, sprite_blink , emptyObstacleY, ticks', index, obstacles'' )
+            ((sprite_x, sprite_y), sprite_blink , emptyObstacleY, ticks', index, obstacles'' )
        
-view :: Model -> MicroBit Msg
-view (sprite_x, sprite_y, sprite_blink , emptyObstacleY, ticks, index, obstacles ) =  
+view :: Model -> MicroBit
+view ((sprite_x, sprite_y), sprite_blink , emptyObstacleY, ticks, index, obstacles ) =  
     microbit [
-        buttonAPressed [GoDown] []
-        , buttonBPressed [GoUp] []
-        , forever [TickPlus] [
+        buttonA [onPressed GoDown] []
+        , buttonB [onPressed GoUp] []
+        , forever [ TickPlus] [
             let result = foldr (\(x,y) acc-> if x == sprite_x && y == sprite_y then True else (acc || False)) False  obstacles in 
-            if result then gameOver []
-            else pause [] 1000]
+            if result then gameOver 
+            else pause 1000]
     ] 
 
-
+main = ivu_FrameWork inite view update
 
 
 {--let ticks = 0

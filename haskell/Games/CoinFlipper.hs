@@ -40,4 +40,4 @@ view model =
             , if model then showicon Yes else showicon No
     ]
 
-main = frameWork inite view update
+main = ivu_FrameWork inite view update

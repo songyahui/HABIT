@@ -32,7 +32,7 @@ view model =
         ,radio [onReceivedString ReceivedString] [setGroup 1, showstring model]
     ]
 
-main = frameWork inite view update
+main = ivu_FrameWork inite view update
 
  
 

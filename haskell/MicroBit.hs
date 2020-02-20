@@ -2,11 +2,13 @@ module MicroBit where
 
 type MicroBit = IO ()
 
-data Signal msg = Signal msg
 
+ivu_FrameWork :: model -> (model -> IO ()) -> (msg -> model -> model) -> IO ()
+ivu_FrameWork inite view update = return ()
 
-frameWork :: model -> (model -> IO ()) -> (msg -> model -> model) -> IO ()
-frameWork inite view update = return ()
+iv_FrameWork :: model -> (model -> IO ()) ->  IO ()
+iv_FrameWork inite view = return ()
+
 
 --------------------------------------------
 
@@ -28,53 +30,56 @@ microbit li = (li !! 1)
 onStart :: [MicroBit] -> MicroBit
 onStart a = (a!!0)
 
-forever :: [MicroBit] -> MicroBit
-forever a = (a!!0)
+forever ::[ msg] -> [MicroBit] -> MicroBit
+forever s a = (a!!0)
 
 -----------------------------------
 -------- MicroBit Input Device ----------
 
-leds:: [Signal msg] -> [MicroBit] -> MicroBit
+leds:: [ msg] -> [MicroBit] -> MicroBit
 leds a b = b !! 0
 
-pin0 ::[Signal msg] -> [MicroBit] -> MicroBit
+pin0 ::[ msg] -> [MicroBit] -> MicroBit
 pin0 a b = b !! 0
 
-pin1 ::[Signal msg] -> [MicroBit] -> MicroBit
+pin1 ::[ msg] -> [MicroBit] -> MicroBit
 pin1 a b = b !! 0
 
-pin2 ::[Signal msg] -> [MicroBit] -> MicroBit
+pin2 ::[ msg] -> [MicroBit] -> MicroBit
 pin2 a b = b !! 0
 
-buttonA ::[Signal msg] -> [MicroBit] -> MicroBit
+buttonA ::[ msg] -> [MicroBit] -> MicroBit
 buttonA a b = b !! 0
 
-buttonB ::[Signal msg] -> [MicroBit] -> MicroBit
+buttonB ::[ msg] -> [MicroBit] -> MicroBit
 buttonB a b = b !! 0
 
-buttonAB ::[Signal msg] -> [MicroBit] -> MicroBit
+buttonAB ::[ msg] -> [MicroBit] -> MicroBit
 buttonAB a b = b !! 0
 
-gesture ::[Signal msg] -> [MicroBit] -> MicroBit
+gesture ::[ msg] -> [MicroBit] -> MicroBit
 gesture a b = b !! 0
 
-radio ::[Signal msg] -> [MicroBit] -> MicroBit
+radio ::[ msg] -> [MicroBit] -> MicroBit
 radio a b = b !! 0
 
 -----------------------------------
 -------- MicroBit Event -----------
 
-onReceivedString :: (String -> msg) -> Signal msg
-onReceivedString fun = Signal (fun "a")
+onReceivedString :: (String -> msg) ->  msg
+onReceivedString fun =  (fun "a")
 
-onShake :: msg -> Signal msg
-onShake m = Signal (m)
+onShake :: msg ->  msg
+onShake m =  (m)
 
-onPressed :: msg -> Signal msg
-onPressed m = Signal (m)
+onLogoDown :: msg ->  msg
+onLogoDown m =  (m)
 
-onReleased :: msg -> Signal msg
-onReleased m = Signal (m)
+onPressed :: msg ->  msg
+onPressed m =  (m)
+
+onReleased :: msg ->  msg
+onReleased m =  (m)
 
 -------------------------------------------
 
@@ -105,6 +110,9 @@ pause num =  print (show num)
 gameOver ::  MicroBit
 gameOver =  return  ()
 
+clearScreen ::  MicroBit
+clearScreen =  return  ()
+
 addScore :: Int  -> MicroBit
 addScore num =  print (show num)
 
@@ -117,8 +125,8 @@ ifOnEdgeBounce =  return ()
 -------- MicroBit Game -----------
 
 
-spritemove:: Sprite -> Int -> Sprite 
-spritemove s n = s
+spritemove:: Int -> MicroBit 
+spritemove n = return ()
 
 -----------------------------------
 -------- MicroBit Math -----------
@@ -134,6 +142,9 @@ fromInt n = show n
 
 math_abs :: Float -> Int 
 math_abs f =  0
+
+math_max :: Int -> Int -> Int
+math_max n1 n2 = n1
 
 magneticForce :: Dimension -> Float
 magneticForce d =  0.0

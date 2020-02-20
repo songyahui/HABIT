@@ -17,23 +17,24 @@ update msg (force, isSwitched) =
             (force', isSwitched')
                 
 
-view :: Model -> MicroBit Msg
+view :: Model -> MicroBit
 view (force, isSwitched) =
     microbit [
         forever [GetMag] []
         ,
-        buttonAPressed [] [
-            if isSwitched then showstring [] "B"
-            else showstring [] "A"
+        buttonA [onPressed ()] [
+            if isSwitched then showstring "B"
+            else showstring "A"
         ]
         ,
-        buttonBPressed [] [
-            if isSwitched then showstring [] "A"
-            else showstring [] "B"
+        buttonB [onPressed ()] [
+            if isSwitched then showstring "A"
+            else showstring "B"
         ]
 
     ]
 
+main = ivu_FrameWork inite view update
 
 {--
 let force = 0;

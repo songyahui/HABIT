@@ -95,6 +95,9 @@ showstring str =  print str
 shownumber :: Int -> MicroBit
 shownumber num =  print (show num)
 
+plot :: Int -> Int -> MicroBit
+plot n1 n2 = return ()
+
 showicon :: IconNames -> MicroBit
 showicon icon =  print "a"
 
@@ -119,11 +122,15 @@ addScore num =  print (show num)
 ifOnEdgeBounce ::  MicroBit
 ifOnEdgeBounce =  return ()
 
+stopAnimation::  MicroBit
+stopAnimation =  return ()
+
 -------------------------------------
 
 -----------------------------------
 -------- MicroBit Game -----------
-
+runningTime ::Int
+runningTime = 1 
 
 spritemove:: Int -> MicroBit 
 spritemove n = return ()
@@ -148,5 +155,8 @@ math_max n1 n2 = n1
 
 magneticForce :: Dimension -> Float
 magneticForce d =  0.0
+
+emptyLeds :: String
+emptyLeds = ". . . . . . . . . . . . . . . . . . . . . . . . . ."
 
 

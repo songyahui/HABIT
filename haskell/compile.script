@@ -14,7 +14,6 @@ ghc Games/RockPaperScissors.hs
 
 #A bit difficute
 ghc Games/CrashyBird.hs 
-ghc Games/KarelTheLED.hs
 ghc Games/MagicButtonTrick.hs
 ghc Games/ReactionTime.hs
 ghc Games/Salute.hs

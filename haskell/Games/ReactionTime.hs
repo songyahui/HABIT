@@ -1,58 +1,65 @@
 import MicroBit
 
-type Model = (Int, Int, Bool, Bool)
+type Model = (Int, Int, Bool, Bool, Int, Int, Int, String)
+
+inite :: Model 
+inite = (0,0,False, False, -1, -1, -1, emptyLeds)
 
 data Msg = P0Pressed | P1Pressed | P2Pressed  
 
 
 update :: Msg -> Model -> Model
-update msg (start, end, false_start, running) = 
+update msg (start, end, false_start, running, random1, random2, random3, led)= 
     case msg of
-        P0Pressed -> (start, end, false_start, running) 
-        P1Pressed -> (start, end, false_start, running) 
-        P2Pressed -> (start, end, false_start, running) 
+        P0Pressed -> 
+            let start' = runningTime in 
+            let ramdom1' = randomRange 0 2000 in 
+            let ramdom2' = randomRange 0 4 in 
+            let ramdom3' = randomRange 0 4 in 
+            (start', end, false_start, True, ramdom1', ramdom2', ramdom3', led)
+        P1Pressed -> 
+            if running then
+                (start, runningTime, false_start, False, random1, random2, random3, "# # . . .# # . . .# # . . .# # . . .# # . . .")
+            else (start, end, True, running, random1, random2, random3, ". . . . .# . # . .. # . . .# . # . .. . . . .")
+        P2Pressed -> 
+            if running then
+                (start, runningTime, false_start, False, random1, random2, random3, ". . . # #. . . # #. . . # #. . . # #. . . # #")
+            else (start, end, True, running, random1, random2, random3, ". . . . .. . # . #. . . # .. . # . #. . . . .")
 
-view :: Model -> MicroBit Msg
-view (start, end, false_start, running) = 
+view :: Model -> MicroBit
+view (start, end, false_start, running, random1, random2, random3, led) = 
     microbit [
-        pin0Pressed [P0Pressed] [
-
+        pin0 [onPressed P0Pressed] [
+              shownumber 3
+            , shownumber 2 
+            , shownumber 1
+            , clearScreen 
+            , pause (1000 + random1)
+            , if false_start == False then 
+                   stopAnimation
+                >> clearScreen
+                >> plot random2 random3
+            else showLeds emptyLeds
+        ]
+        ,
+        pin1 [onPressed P1Pressed] [
+            if running then 
+              showLeds led
+            >> pause 1000 
+            >> shownumber (end - start)
+            else showLeds led
         ]
         , 
-        pin1Pressed [P0Pressed] [
-
-        ]
-        , 
-        pin2Pressed [P0Pressed] [
-
-
-
-if (running) {
-        running = false
-        end = input.runningTime()
-        basic.showLeds(`
-            . . . # #
-            . . . # #
-            . . . # #
-            . . . # #
-            . . . # #
-            `)
-        basic.pause(1000)
-        basic.showNumber(end - start)
-    } else {
-        false_start = true
-        basic.showLeds(`
-            . . . . .
-            . . # . #
-            . . . # .
-            . . # . #
-            . . . . .
-            `)
-    }
-
+        pin2 [onPressed P2Pressed] [
+            if running then 
+              showLeds led
+            >> pause 1000 
+            >> shownumber (end - start)
+            else showLeds led
         ]
     ]
 
+main = ivu_FrameWork inite view update
 
 {--
 let start = 0

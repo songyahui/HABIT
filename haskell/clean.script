@@ -7,4 +7,10 @@ rm Tutorials/*.o
 rm Games/*.hi
 rm Games/*.o
 
+rm Radio_Games/*.hi
+rm Radio_Games/*.o
+
+rm Fashion/*.hi
+rm Fashion/*.o
+
 find . -type f  ! -name "*.*"  -delete

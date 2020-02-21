@@ -18,3 +18,19 @@ ghc Games/MagicButtonTrick.hs
 ghc Games/ReactionTime.hs
 ghc Games/Salute.hs
 ghc Games/SnapTheDot.hs
+
+#Fashion
+ghc Fashion/wallet.hs
+ghc Fashion/watch.hs
+ghc Fashion/step_counter.hs
+
+#Radio_Games
+ghc Radio_Games/fireflies.hs
+ghc Radio_Games/hot_or_cold.hs
+ghc Radio_Games/micro_coin.hs
+ghc Radio_Games/mood_radio.hs
+ghc Radio_Games/multi_dice.hs
+ghc Radio_Games/red_light_green_light.hs
+ghc Radio_Games/rps_teams.hs
+ghc Radio_Games/tele_potato.hs
+ghc Radio_Games/voting_machine.hs

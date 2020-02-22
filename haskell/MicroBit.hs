@@ -134,6 +134,14 @@ ifOnEdgeBounce =  return ()
 stopAnimation::  MicroBit
 stopAnimation =  return ()
 
+
+-----------------------------------
+-------- MicroBit Input -----------
+
+lightLevel :: Int
+lightLevel = 0 
+
+
 -------------------------------------
 
 -----------------------------------

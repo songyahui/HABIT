@@ -1,9 +1,11 @@
 // the clock ticker
 let clock = 0
+
 radio.onReceivedNumber(function (receivedNumber) {
     // advance clock to catch up neighbors
     clock += 1
 })
+
 basic.forever(() => {
     // if clock hits noon, flash the screen
     if (clock >= 8) {
@@ -22,5 +24,6 @@ basic.forever(() => {
         clock += 1
     }
 })
+
 radio.setTransmitPower(1)
 radio.setGroup(12)

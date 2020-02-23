@@ -3,16 +3,20 @@ let emptyObstacleY = 0
 let obstacles: game.LedSprite[] = []
 let index = 0
 let bird: game.LedSprite = null
+
 input.onButtonPressed(Button.A, () => {
     bird.change(LedSpriteProperty.Y, -1)
 })
+
 input.onButtonPressed(Button.B, () => {
     bird.change(LedSpriteProperty.Y, 1)
 })
+
 index = 0
 obstacles = []
 bird = game.createSprite(0, 2)
 bird.set(LedSpriteProperty.Blink, 300)
+
 basic.forever(() => {
     while (obstacles.length > 0 && obstacles[0].get(LedSpriteProperty.X) == 0) {
         obstacles.removeAt(0).delete()

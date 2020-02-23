@@ -1,6 +1,7 @@
 let beacons: number[] = [0];
 let signal = 0;
 let serialNumber = 0;
+
 radio.onReceivedNumber(function (receivedNumber) {
     signal = radio.receivedPacket(RadioPacketProperty.SignalStrength)
     serialNumber = radio.receivedPacket(RadioPacketProperty.SerialNumber)
@@ -18,7 +19,9 @@ radio.onReceivedNumber(function (receivedNumber) {
         }
     }
 })
+
 input.onButtonPressed(Button.A, () => {
     basic.showNumber(game.score())
 })
+
 radio.setGroup(1)

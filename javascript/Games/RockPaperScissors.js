@@ -1,4 +1,5 @@
 let num = 0
+
 input.onGesture(Gesture.Shake, function () {
     num = Math.randomRange(0, 3)
     if (num == 0) {
@@ -27,6 +28,7 @@ input.onGesture(Gesture.Shake, function () {
             `)
     }
 })
+
 basic.forever(function () {
 	
 })

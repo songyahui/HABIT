@@ -1,15 +1,3 @@
-{--
-basic.forever(function () {
-    basic.showLeds(`
-        . # . # .
-        # # # # #
-        # # # # #
-        . # # # .
-        . . # . .
-        `)
-})
---}
-
 import MicroBit
 
 

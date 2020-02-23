@@ -3,6 +3,7 @@ let start = 0
 let end = 0
 let false_start = false
 let running = false
+
 input.onPinPressed(TouchPin.P0, () => {
     basic.showNumber(3)
     basic.showNumber(2)
@@ -19,6 +20,7 @@ input.onPinPressed(TouchPin.P0, () => {
         led.plot(Math.randomRange(0, 4), Math.randomRange(0, 4))
     }
 })
+
 input.onPinPressed(TouchPin.P1, () => {
     if (running) {
         running = false
@@ -43,6 +45,7 @@ input.onPinPressed(TouchPin.P1, () => {
             `)
     }
 })
+
 input.onPinPressed(TouchPin.P2, () => {
     if (running) {
         running = false

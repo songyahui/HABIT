@@ -5,6 +5,8 @@ let tool = 0
 let match = false
 let players: number[] = []
 let serialNumber = 0;
+
+
 radio.onReceivedNumber(function (receivedNumber) {
     serialNumber = radio.receivedPacket(RadioPacketProperty.SerialNumber)
     match = tool == receivedNumber
@@ -17,10 +19,14 @@ radio.onReceivedNumber(function (receivedNumber) {
         temp = players.removeAt(player_index)
     }
 })
+
+
 input.onGesture(Gesture.Shake, function() {
     players = [0]
     tool = Math.randomRange(0, 2)
 })
+
+
 basic.forever(function() {
     radio.sendNumber(tool)
     if (tool == 0) {
@@ -32,6 +38,8 @@ basic.forever(function() {
     }
     basic.showNumber(players.length)
 })
+
+
 players = [0]
 radio.setGroup(10)
 radio.setTransmitSerialNumber(true)

@@ -5,7 +5,7 @@ data Model = Model {message :: String}
 inite :: Model
 inite = Model ""
 
-data Msg = ReceivedString String | None
+data Msg = ReceivedString String
 
 update :: Msg -> Model -> Model
 update msg model = 
@@ -15,7 +15,7 @@ update msg model =
 view :: Model -> MicroBit
 view model = 
     microbit [
-        buttonA [onPressed None] [
+        buttonA [] [
             setGroup 1, 
             sendString "Yo"
             ],
@@ -25,7 +25,7 @@ view model =
             ]
     ]
 
-main = ivu_FrameWork inite view update
+main = sandbox inite view update
 
  
 

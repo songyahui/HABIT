@@ -3,11 +3,8 @@ module MicroBit where
 type MicroBit = IO ()
 
 
-ivu_FrameWork :: model -> (model -> IO ()) -> (msg -> model -> model) -> IO ()
-ivu_FrameWork inite view update = return ()
-
-iv_FrameWork :: model -> (model -> IO ()) ->  IO ()
-iv_FrameWork inite view = return ()
+sandbox :: model -> (model -> IO ()) -> (msg -> model -> model) -> IO ()
+sandbox inite view update = return ()
 
 element :: ( model, Maybe msg ) -> (model -> IO ()) -> (msg -> model -> ( model, Maybe msg )) -> IO ()
 element init view update = return ()
@@ -29,6 +26,13 @@ m # f = f m
 
 generate :: (a -> msg) -> a -> msg 
 generate fun a = fun a 
+
+--------------
+-- Radio
+-------------
+
+expectString :: (a -> msg) -> a -> msg 
+expectString fun a = fun a 
 
 --------------------------------------------
 

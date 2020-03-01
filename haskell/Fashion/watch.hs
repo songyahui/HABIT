@@ -26,4 +26,4 @@ view model =
     ]
 
 
-main = ivu_FrameWork inite view update
+main = sandbox inite view update

@@ -19,5 +19,5 @@ view (x, y) =
         ] 
     ]
 
-main = iv_FrameWork inite view
+main = view inite
 

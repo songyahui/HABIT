@@ -2,12 +2,19 @@ module MicroBit where
 
 type MicroBit = IO ()
 
+type Posix = Int
+
+data Cmd msg = Cmd msg | CmdNone
+
+data Sub msg = Sub msg | SubNone
+
+data Generator a = Generator a
 
 sandbox :: model -> (model -> IO ()) -> (msg -> model -> model) -> IO ()
 sandbox inite view update = return ()
 
-element :: ( model, Maybe msg ) -> (model -> IO ()) -> (msg -> model -> ( model, Maybe msg )) -> IO ()
-element init view update = return ()
+element :: ( model, Cmd msg ) -> (model -> IO ()) -> (msg -> model -> ( model, Cmd msg )) -> (model -> Sub msg) -> IO ()
+element init view update subscriptions = return ()
 
 
 (@>) :: (model->f) -> f -> ()
@@ -24,8 +31,12 @@ m # f = f m
 -- Random
 -------------
 
-generate :: (a -> msg) -> a -> msg 
-generate fun a = fun a 
+generate :: (a -> msg) -> Generator a -> Cmd msg
+generate fun (Generator a) = Cmd (fun a) 
+
+
+readSensor :: (a -> msg) -> Generator a -> Cmd msg
+readSensor fun (Generator a) = Cmd (fun a) 
 
 --------------
 -- Radio
@@ -34,6 +45,13 @@ generate fun a = fun a
 expectString :: (a -> msg) -> a -> msg 
 expectString fun a = fun a 
 
+
+--------------
+-----Time
+--------------
+
+every :: Int -> (Posix -> msg) -> Sub msg
+every n fun =  Sub (fun 1) 
 --------------------------------------------
 
 data Icon = String
@@ -131,11 +149,11 @@ setGroup num =  return  ()
 sendString :: String -> MicroBit
 sendString str =  print "a"
 
-pause :: Int -> MicroBit
-pause num =  print (show num)
-
 gameOver ::  MicroBit
 gameOver =  return  ()
+
+continue ::  MicroBit
+continue =  return  ()
 
 clearScreen ::  MicroBit
 clearScreen =  return  ()
@@ -153,14 +171,15 @@ stopAnimation =  return ()
 -----------------------------------
 -------- MicroBit Input -----------
 
-lightLevel :: Int
-lightLevel = 0 
-
+lightLevel :: Generator Int
+lightLevel = Generator 0 
 
 -------------------------------------
 
 -----------------------------------
 -------- MicroBit Game -----------
+type Game_LedSprite = [(Int, Int)]
+
 runningTime ::Int
 runningTime = 1 
 
@@ -170,11 +189,11 @@ spritemove n = return ()
 -----------------------------------
 -------- MicroBit Math -----------
 
-randomRange ::Int -> Int -> Int 
-randomRange n1 n2 = 1
+randomRange ::Int -> Int -> Generator Int 
+randomRange n1 n2 = Generator 1
 
-randomBoolean :: Bool
-randomBoolean = True
+randomBoolean :: Generator Bool
+randomBoolean = Generator True
 
 fromInt :: Int -> String 
 fromInt n = show n

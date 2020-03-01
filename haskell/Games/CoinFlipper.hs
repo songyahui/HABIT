@@ -3,15 +3,17 @@ import MicroBit
 
 data Model = Model {b::Bool} 
 
-inite :: Model
-inite = Model True
+inite :: (Model, Cmd Msg)
+inite = (Model True, CmdNone)
 
-data Msg = GetRandomBool
+data Msg = GetRandomBool | ConsumeRandomBool Bool 
 
-update :: Msg -> Model -> Model
+update :: Msg -> Model -> (Model, Cmd Msg)
 update msg model = 
     case msg of 
-        GetRandomBool -> model <^> [b @> randomBoolean]
+        GetRandomBool -> (model, generate ConsumeRandomBool randomBoolean)
+        ConsumeRandomBool randomValue -> 
+            (model <^> [b @> randomValue], CmdNone)
      
 view :: Model -> MicroBit
 view model = 
@@ -23,4 +25,4 @@ view model =
             if model # b then showicon Yes else showicon No
     ]
 
-main = ivu_FrameWork inite view update
+main = element inite view update (\_ -> SubNone)

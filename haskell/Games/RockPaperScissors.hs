@@ -3,17 +3,17 @@ import MicroBit
 {--@ n : Int | n > 0 @--}
 type Model = Int 
 
+data Msg = GetRandom | ConsumeRandomValue Int  
 
-inite :: Model
-inite = 0 
-
-data Msg = GetRandom
+inite :: (Model, Cmd Msg)
+inite = (0, CmdNone) 
 
 {--@ True -> n : Int | n > 0 @--}
-update :: Msg -> Model -> Model 
+update :: Msg -> Model -> (Model, Cmd Msg) 
 update msg model = 
     case msg of 
-        GetRandom  -> randomRange 0 3
+        GetRandom  -> (model, generate  ConsumeRandomValue (randomRange 0 3))
+        ConsumeRandomValue randomValue -> (randomValue, CmdNone)
 
 
 view :: Model -> MicroBit
@@ -27,4 +27,4 @@ view model =
             showLeds ". . . . # . . . # . . . # . . . # . . . # . . . ."
     ]
 
-main = ivu_FrameWork inite view update
+main = element inite view update (\_ -> SubNone)

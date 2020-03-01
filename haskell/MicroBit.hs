@@ -9,6 +9,10 @@ ivu_FrameWork inite view update = return ()
 iv_FrameWork :: model -> (model -> IO ()) ->  IO ()
 iv_FrameWork inite view = return ()
 
+element :: ( model, Maybe msg ) -> (model -> IO ()) -> (msg -> model -> ( model, Maybe msg )) -> IO ()
+element init view update = return ()
+
+
 (@>) :: (model->f) -> f -> ()
 f @> d = ()
 
@@ -18,6 +22,13 @@ m <^> tu = m
 (#) :: model -> (model->f)  -> f
 m # f = f m 
 
+
+--------------
+-- Random
+-------------
+
+generate :: (a -> msg) -> a -> msg 
+generate fun a = fun a 
 
 --------------------------------------------
 

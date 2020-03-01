@@ -2,18 +2,20 @@ import MicroBit
 
 data Model = Model {randomNum::Int}
 
-inite :: Model
-inite = Model 0
+data Msg = ProduceRandomValue | ConsumeRandomValue Int  
 
-data Msg = GetRandomNum
+inite :: (Model, Maybe Msg)
+inite = (Model 0, Nothing)
 
-update :: Msg -> Model -> Model
+update :: Msg -> Model -> (Model, Maybe Msg)
 update msg model = 
     case msg of 
-        GetRandomNum -> model <^> [randomNum @> (randomRange 0 10)]
+        ProduceRandomValue -> (model, Just $ generate  ConsumeRandomValue (randomRange 0 10))
+        ConsumeRandomValue randomValue -> 
+            (model <^> [randomNum @> randomValue], Nothing)
 
 view :: Model -> MicroBit
 view model = 
-    gesture [onShake GetRandomNum] [shownumber (model # randomNum )]
+    gesture [onShake ProduceRandomValue] [shownumber (model # randomNum )]
 
-main = ivu_FrameWork inite view update
+main = element inite view update

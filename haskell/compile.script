@@ -1,6 +1,7 @@
 #simple
 #chmod 755 clean.scrpit
 #chmod 755 compile.scrpit 
+ghc Tutorials/Blink.hs
 ghc Tutorials/Dice.hs
 ghc Tutorials/FlashingHeart.hs
 ghc Tutorials/LoveMeter.hs

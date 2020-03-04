@@ -1,11 +1,12 @@
 import MicroBit
 
+pattern:: Signal LED
+pattern = return $ ShowLED 
+    [   ". # . # .",
+        "# # # # #",
+        "# # # # #",
+        ". # # # .",
+        ". . # . ."]
 
 main :: MicroBit
-main = MicroBit.showLeds [
-    ". # . # .",
-    "# # # # #",
-    "# # # # #",
-    ". # # # .",
-    ". . # . ."]
-
+main = microBit [led pattern]

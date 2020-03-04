@@ -1,30 +1,12 @@
 import MicroBit
 
-type Model = String
+mesg :: Signal RADIO
+mesg = lift (\_ -> SendStr "Yo") (when (buttonA IsPressed))
 
-inite :: (Model, Cmd Msg)
-inite = ("", CmdNone)
+receivedString :: Signal LED
+receivedString = lift (\a -> ShowStr a) onReceivedString
 
-data Msg = ReceivedMsg String | Send
-
-update :: Msg -> Model -> (Model, Cmd Msg)
-update msg model = 
-    case msg of 
-        Send -> (
-            model, 
-            radioSendString AnyGroup "Yo")
-        ReceivedMsg str -> 
-            (str, CmdNone)
-
-subscriptions:: Model -> Sub Msg
-subscriptions model = 
-    radioReceivedString AnyGroup ReceivedMsg
-     
-view :: Model -> MicroBit
-view model = 
-    microbit [
-        buttonA [onPressed Send] [],
-        MicroBit.showString model
+main = microBit [
+        radio mesg, 
+        led receivedString
     ]
-
-main = element inite view update subscriptions

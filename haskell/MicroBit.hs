@@ -1,222 +1,173 @@
 module MicroBit where
 
+--------------------------------------------------------------
+-----Abstraction of Signal------------------------------------
+-----Signal is a functor, Applicative, and Monad--------------
+--------------------------------------------------------------
+data Signal a = Signal a
+
+instance Functor Signal where
+    fmap fun (Signal a) = Signal $ fun a
+
+instance Applicative Signal where
+    pure a = Signal a
+    (<*>) (Signal fun) (Signal a) = (Signal $ fun a)
+
+instance Monad Signal where
+    return a = Signal a  
+    (>>=) (Signal a) fun = (fun a) 
+    (>>) (Signal a) (Signal b) = (Signal b)
+
+--------------------------------------------------------------
+-----Abstraction of Temporal Operators------------------------
+--------------------------------------------------------------
+
+when :: Signal Bool -> Signal Bool
+when a = a
+
+pre :: Signal a -> Signal a
+pre a = a
+
+-- followed by
+(@>) :: a -> Signal a -> Signal a
+init @> rest = rest
+
+current :: Signal a -> Signal a
+current a = a
+
+--------------------------------------------------------------
+-----Abstraction of Combinators-------------------------------
+--------------------------------------------------------------
+
+fold :: (a -> b -> b) -> b -> Signal a -> Signal b
+fold fun b (Signal a) = Signal (fun a b)
+
+lift :: (a -> b ) -> Signal a  -> Signal b
+lift fun (Signal a) =  Signal (fun a )
+
+lift_2 :: (a -> b -> c) -> Signal a -> Signal b -> Signal c
+lift_2 fun (Signal a) (Signal b) =  Signal (fun a b)
+
+lift_3 :: (a -> b -> c ->d) -> Signal a -> Signal b -> Signal c -> Signal d
+lift_3 fun (Signal a) (Signal b) (Signal c) =  Signal (fun a b c)
+
+lift_4 :: (a -> b -> c ->d -> e) -> Signal a -> Signal b -> Signal c -> Signal d -> Signal e
+lift_4 fun (Signal a) (Signal b) (Signal c) (Signal d) = Signal (fun a b c d)
+
+lift_5 :: (a -> b -> c ->d -> e->f) -> Signal a -> Signal b -> Signal c -> Signal d -> Signal e -> Signal f
+lift_5 fun (Signal a) (Signal b) (Signal c) (Signal d) (Signal e) = Signal (fun a b c d e )
+
+--------------------------------------------------------------
+-------- Abstraction of a MicroBit kit -----------------------
+--------------------------------------------------------------
+
 type MicroBit = IO ()
 
-type Posix = Int
+data LED = ShowNum Int | ShowStr String | ShowLED [String] 
+data RADIO = SendStr String | SetGroup Int
 
-data Cmd msg = Cmd msg | CmdNone
+led :: Signal LED -> MicroBit
+led m = return () 
 
-data Sub msg = Sub msg | SubNone
+radio :: Signal RADIO -> MicroBit
+radio m = return ()
 
-data Group = AnyGroup | Group Int
+plot :: Int -> Int -> Signal Bool -> MicroBit
+plot x y s = return ()
 
-data Attribute msg = Attribute msg
-
-data Generator a = Generator a
-
-type LED = [String]
-
-sandbox :: model -> (model -> IO ()) -> (msg -> model -> model) -> IO ()
-sandbox inite view update = return ()
-
-element :: ( model, Cmd msg ) -> (model -> IO ()) -> (msg -> model -> ( model, Cmd msg )) -> (model -> Sub msg) -> IO ()
-element init view update subscriptions = return ()
+sendString :: String -> IO ()
+sendString str = return ()
 
 
-(@>) :: (model->f) -> f -> ()
-f @> d = ()
-
-(<^>) :: model -> [()] -> model
-m <^> tu = m
-
-(#) :: model -> (model->f)  -> f
-m # f = f m 
-
-
---------------
--- Random
--------------
-
-generate :: (a -> msg) -> Generator a -> Cmd msg
-generate fun (Generator a) = Cmd (fun a) 
-
-
-readSensor :: (a -> msg) -> Generator a -> Cmd msg
-readSensor fun (Generator a) = CmdNone
-
-radioSendString :: Group -> String -> Cmd msg
-radioSendString g str =  CmdNone
-
---------------
--- Radio
--------------
-
-expectString :: (a -> msg) -> a -> msg 
-expectString fun a = fun a 
-
-
---------------
------Time
---------------
-
-every :: Int -> (Posix -> msg) -> Sub msg
-every n fun =  Sub (fun 1) 
-
-radioReceivedString :: Group -> (String -> msg) -> Sub msg
-radioReceivedString g fun =  Sub (fun "1") 
---------------------------------------------
-
-data Icon = String
-
-data IconNames = SmallDiamond | Diamond | Yes | No | NoPattern
-
-data Dimension = X | Y | Z | Strangth
-
-type Sprite = (Int, Int)
-
-type Score = Int
-
---------------------------------------------
-
-microbit :: [MicroBit] -> MicroBit
-microbit li = (li !! 1)
+microBit :: [MicroBit] -> MicroBit
+microBit a = a!!0
 
 onStart :: [MicroBit] -> MicroBit
-onStart a = (a!!0)
+onStart a = a!!0
 
-forever ::[ msg] -> [MicroBit] -> MicroBit
-forever s a = (a!!0)
+--------------------------------------------------------------
+--------------- Gesture Listeners ----------------------------
+--------------------------------------------------------------
 
------------------------------------
--------- MicroBit Input Device ----------
+onShake :: Signal Bool
+onShake = Signal True
 
-leds:: [Attribute msg] -> [IO ()] -> MicroBit
-leds a b = b !! 0
+onLogoUp :: Signal Bool
+onLogoUp = Signal True
 
-pin0 ::[Attribute msg] -> [IO ()] -> MicroBit
-pin0 a b = b !! 0
+onLogoDown :: Signal Bool
+onLogoDown = Signal True
 
-pin1 ::[Attribute msg] -> [IO ()] -> MicroBit
-pin1 a b = b !! 0
+onScreenUp :: Signal Bool
+onScreenUp = Signal True
 
-pin2 ::[Attribute msg] -> [IO ()] -> MicroBit
-pin2 a b = b !! 0
+onScreenDown :: Signal Bool
+onScreenDown = Signal True
 
-buttonA ::[Attribute msg] -> [IO ()] -> MicroBit
-buttonA a b = b !! 0
+tiltLeft :: Signal Bool
+tiltLeft = Signal True
 
-buttonB ::[Attribute msg] -> [IO ()] -> MicroBit
-buttonB a b = b !! 0
+tiltRight :: Signal Bool
+tiltRight = Signal True
 
-buttonAB ::[Attribute msg] -> [IO ()] -> MicroBit
-buttonAB a b = b !! 0
+freeFall :: Signal Bool
+freeFall = Signal True
 
-gesture ::[Attribute msg] -> [IO ()] -> MicroBit
-gesture a b = b !! 0
+threeG :: Signal Bool
+threeG = Signal True
 
-radio ::[Attribute msg] -> [IO ()] -> MicroBit
-radio a b = b !! 0
+sixG :: Signal Bool
+sixG = Signal True
 
------------------------------------
--------- MicroBit Event -----------
-
-onShake :: msg -> Attribute msg
-onShake m =  Attribute (m)
-
-onLogoDown :: msg ->  Attribute msg
-onLogoDown m = Attribute (m)
-
-onPressed :: msg -> Attribute msg
-onPressed m = Attribute (m)
-
-onReleased :: msg -> Attribute msg
-onReleased m = Attribute (m)
-
--------------------------------------------
-
------------------------------------
--------- MicroBit IO -----------
-
-showLeds :: LED -> MicroBit
-showLeds str =  print (str!! 0)
-
-showString :: String -> MicroBit
-showString str =  print str
-
-showNumber :: Int -> MicroBit
-showNumber num =  print (show num)
-
-plot :: Int -> Int -> MicroBit
-plot n1 n2 = return ()
-
-showIcon :: IconNames -> MicroBit
-showIcon icon =  print "a"
-
-setGroup :: Int -> MicroBit
-setGroup num =  return  ()
-
-sendString :: String -> MicroBit
-sendString str =  print "a"
-
-gameOver ::  MicroBit
-gameOver =  return  ()
-
-continue ::  MicroBit
-continue =  return  ()
-
-clearScreen ::  MicroBit
-clearScreen =  return  ()
-
-addScore :: Int  -> MicroBit
-addScore num =  print (show num)
-
-ifOnEdgeBounce ::  MicroBit
-ifOnEdgeBounce =  return ()
-
-stopAnimation::  MicroBit
-stopAnimation =  return ()
+eightG :: Signal Bool
+eightG = Signal True
 
 
------------------------------------
--------- MicroBit Input -----------
+onReceivedString :: Signal String
+onReceivedString = Signal "True"
 
-lightLevel :: Generator Int
-lightLevel = Generator 0 
+--------------------------------------------------------------
+--------------- Press Listeners ------------------------------
+--------------------------------------------------------------
 
--------------------------------------
+data Opration = IsPressed | IsReleased
 
------------------------------------
--------- MicroBit Game -----------
-type Game_LedSprite = [(Int, Int)]
+pin0 :: Opration -> Signal Bool
+pin0 op = Signal True
 
-runningTime ::Int
-runningTime = 1 
+pin1 :: Opration -> Signal Bool
+pin1 op = Signal True
 
-spritemove:: Int -> MicroBit 
-spritemove n = return ()
+pin2 :: Opration -> Signal Bool
+pin2 op = Signal True
 
------------------------------------
--------- MicroBit Math -----------
+buttonA :: Opration -> Signal Bool
+buttonA op = Signal True
 
-randomRange ::Int -> Int -> Generator Int 
-randomRange n1 n2 = Generator 1
+buttonB :: Opration -> Signal Bool
+buttonB op = Signal True
 
-randomBoolean :: Generator Bool
-randomBoolean = Generator True
+buttonAB :: Opration -> Signal Bool
+buttonAB op = Signal True
 
-fromInt :: Int -> String 
-fromInt n = show n
+--------------------------------------------------------------
+----- Preliminaries for randomness ---------------------------
+--------------------------------------------------------------
 
-math_abs :: Float -> Int 
-math_abs f =  0
-
-math_max :: Int -> Int -> Int
-math_max n1 n2 = n1
-
-magneticForce :: Dimension -> Float
-magneticForce d =  0.0
-
-emptyLeds :: String
-emptyLeds = ". . . . . . . . . . . . . . . . . . . . . . . . . ."
+randomRange :: Int -> Int -> Int
+randomRange a b = 0 
 
 
+
+
+
+generateRandomBool :: Bool
+generateRandomBool = True
+
+
+
+everySec :: Signal Int
+everySec = Signal 1
+
+foldP :: ( a -> acc -> acc) -> acc -> Signal a -> Signal acc
+foldP fun init li = Signal init

@@ -8,7 +8,13 @@ data Cmd msg = Cmd msg | CmdNone
 
 data Sub msg = Sub msg | SubNone
 
+data Group = AnyGroup | Group Int
+
+data Attribute msg = Attribute msg
+
 data Generator a = Generator a
+
+type LED = [String]
 
 sandbox :: model -> (model -> IO ()) -> (msg -> model -> model) -> IO ()
 sandbox inite view update = return ()
@@ -36,7 +42,10 @@ generate fun (Generator a) = Cmd (fun a)
 
 
 readSensor :: (a -> msg) -> Generator a -> Cmd msg
-readSensor fun (Generator a) = Cmd (fun a) 
+readSensor fun (Generator a) = CmdNone
+
+radioSendString :: Group -> String -> Cmd msg
+radioSendString g str =  CmdNone
 
 --------------
 -- Radio
@@ -52,6 +61,9 @@ expectString fun a = fun a
 
 every :: Int -> (Posix -> msg) -> Sub msg
 every n fun =  Sub (fun 1) 
+
+radioReceivedString :: Group -> (String -> msg) -> Sub msg
+radioReceivedString g fun =  Sub (fun "1") 
 --------------------------------------------
 
 data Icon = String
@@ -78,70 +90,67 @@ forever s a = (a!!0)
 -----------------------------------
 -------- MicroBit Input Device ----------
 
-leds:: [ msg] -> [MicroBit] -> MicroBit
+leds:: [Attribute msg] -> [IO ()] -> MicroBit
 leds a b = b !! 0
 
-pin0 ::[ msg] -> [MicroBit] -> MicroBit
+pin0 ::[Attribute msg] -> [IO ()] -> MicroBit
 pin0 a b = b !! 0
 
-pin1 ::[ msg] -> [MicroBit] -> MicroBit
+pin1 ::[Attribute msg] -> [IO ()] -> MicroBit
 pin1 a b = b !! 0
 
-pin2 ::[ msg] -> [MicroBit] -> MicroBit
+pin2 ::[Attribute msg] -> [IO ()] -> MicroBit
 pin2 a b = b !! 0
 
-buttonA ::[ msg] -> [MicroBit] -> MicroBit
+buttonA ::[Attribute msg] -> [IO ()] -> MicroBit
 buttonA a b = b !! 0
 
-buttonB ::[ msg] -> [MicroBit] -> MicroBit
+buttonB ::[Attribute msg] -> [IO ()] -> MicroBit
 buttonB a b = b !! 0
 
-buttonAB ::[ msg] -> [MicroBit] -> MicroBit
+buttonAB ::[Attribute msg] -> [IO ()] -> MicroBit
 buttonAB a b = b !! 0
 
-gesture ::[ msg] -> [MicroBit] -> MicroBit
+gesture ::[Attribute msg] -> [IO ()] -> MicroBit
 gesture a b = b !! 0
 
-radio ::[ msg] -> [MicroBit] -> MicroBit
+radio ::[Attribute msg] -> [IO ()] -> MicroBit
 radio a b = b !! 0
 
 -----------------------------------
 -------- MicroBit Event -----------
 
-onReceivedString :: (String -> msg) ->  msg
-onReceivedString fun =  (fun "a")
+onShake :: msg -> Attribute msg
+onShake m =  Attribute (m)
 
-onShake :: msg ->  msg
-onShake m =  (m)
+onLogoDown :: msg ->  Attribute msg
+onLogoDown m = Attribute (m)
 
-onLogoDown :: msg ->  msg
-onLogoDown m =  (m)
+onPressed :: msg -> Attribute msg
+onPressed m = Attribute (m)
 
-onPressed :: msg ->  msg
-onPressed m =  (m)
-
-onReleased :: msg ->  msg
-onReleased m =  (m)
+onReleased :: msg -> Attribute msg
+onReleased m = Attribute (m)
 
 -------------------------------------------
 
 -----------------------------------
 -------- MicroBit IO -----------
 
-showLeds :: String -> MicroBit
-showLeds str =  print str
+showLeds :: LED -> MicroBit
+showLeds str =  print (str!! 0)
 
-showstring :: String -> MicroBit
-showstring str =  print str
+showString :: String -> MicroBit
+showString str =  print str
 
-shownumber :: Int -> MicroBit
-shownumber num =  print (show num)
+showNumber :: Int -> MicroBit
+showNumber num =  print (show num)
 
 plot :: Int -> Int -> MicroBit
 plot n1 n2 = return ()
 
-showicon :: IconNames -> MicroBit
-showicon icon =  print "a"
+showIcon :: IconNames -> MicroBit
+showIcon icon =  print "a"
 
 setGroup :: Int -> MicroBit
 setGroup num =  return  ()

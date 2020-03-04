@@ -2,5 +2,10 @@ import MicroBit
 
 
 main :: MicroBit
-main = showstring ". # . # . # # # # # # # # # # . # # # . . . # . ."
+main = MicroBit.showLeds [
+    ". # . # .",
+    "# # # # #",
+    "# # # # #",
+    ". # # # .",
+    ". . # . ."]
 

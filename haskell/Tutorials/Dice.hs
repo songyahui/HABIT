@@ -1,21 +1,25 @@
 import MicroBit
 
-data Model = Model {randomNum::Int}
+type Model = Int
 
-data Msg = ProduceRandomValue | ConsumeRandomValue Int  
+data Msg = ProduceValue | ConsumeValue Int  
 
 inite :: (Model, Cmd Msg)
-inite = (Model 0, CmdNone)
+inite = (0, CmdNone)
 
 update :: Msg -> Model -> (Model, Cmd Msg)
 update msg model = 
     case msg of 
-        ProduceRandomValue -> (model, generate ConsumeRandomValue (randomRange 0 10))
-        ConsumeRandomValue randomValue -> 
-            (model <^> [randomNum @> randomValue], CmdNone)
+        ProduceValue -> 
+            (model, 
+            generate ConsumeValue (randomRange 0 10))
+        ConsumeValue randomValue -> 
+            (randomValue, 
+            CmdNone)
 
 view :: Model -> MicroBit
 view model = 
-    gesture [onShake ProduceRandomValue] [shownumber (model # randomNum )]
+    gesture [onShake ProduceValue] 
+            [MicroBit.showNumber model]
 
 main = element inite view update (\_-> SubNone)

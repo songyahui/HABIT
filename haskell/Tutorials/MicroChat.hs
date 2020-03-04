@@ -1,22 +1,30 @@
 import MicroBit
 
-data Model = Model {message :: String}
+type Model = String
 
-inite :: Model
-inite = Model ""
+inite :: (Model, Cmd Msg)
+inite = ("", CmdNone)
 
-data Msg = ReceivedString String
+data Msg = ReceivedMsg String | Send
 
-update :: Msg -> Model -> Model
+update :: Msg -> Model -> (Model, Cmd Msg)
 update msg model = 
     case msg of 
-        ReceivedString str -> model <^> [message@> str]
+        Send -> (
+            model, 
+            radioSendString AnyGroup "Yo")
+        ReceivedMsg str -> 
+            (str, CmdNone)
+
+subscriptions:: Model -> Sub Msg
+subscriptions model = 
+    radioReceivedString AnyGroup ReceivedMsg
      
 view :: Model -> MicroBit
 view model = 
     microbit [
-        buttonA [] [sendString "Yo"],
-        radio [onReceivedString ReceivedString] [showstring (model # message)]
+        buttonA [onPressed Send] [],
+        MicroBit.showString model
     ]
 
-main = sandbox inite view update
+main = element inite view update subscriptions

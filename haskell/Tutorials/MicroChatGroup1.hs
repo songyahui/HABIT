@@ -1,18 +1,17 @@
 import MicroBit
+import Prelude hiding (map)
 
-mesg :: Signal RADIO
-mesg = 
-    let setgroup = return (SetGroup 1) in 
-    let send = lift (\_ -> SendStr "Yo") (when (buttonA IsPressed)) in 
-    setgroup >> send
+mesg :: Sig String
+mesg = map (\_ -> "Yo") (buttonA IsPressed)
 
-receivedString :: Signal LED
-receivedString = 
-    let setgroup = return (SetGroup 1) in 
-    let string = lift (\a -> ShowStr a) onReceivedString in 
-    setgroup >> string 
+receivedString :: Sig String
+receivedString = onReceivedString
 
-main = microBit [
-        radio mesg, 
-        led receivedString
+group :: Sig Int
+group = return 1 
+
+radio :: MicroBit
+radio = par [
+    radio_setGroup group >> radio_sendStr mesg,
+    radio_setGroup group >> showStr receivedString
     ]

@@ -1,6 +1,10 @@
 import MicroBit
+import Prelude hiding (map)
 
-randomNum :: Signal LED
-randomNum = lift (\a -> ShowNum (randomRange 0 10) ) (when onShake)
+randomNum :: Sig Int
+randomNum = map (\_ -> randomRange 0 10) shake
 
-main = microBit [led randomNum]
+led :: MicroBit
+led = 
+    assert (randomNum .< 100)
+    showNum randomNum

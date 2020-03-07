@@ -1,36 +1,22 @@
 import MicroBit
 
+force :: Signal Float 
+force = lift _abs (magneticForce Strength)
 
-data Model = Model {force:: Int, isSwitched::Bool}
+isSwitched :: Signal Bool
+isSwitched = False  @> (lift (> 100) force)
 
-inite :: Model
-inite = Model 0 False
+patternA:: Signal LED
+patternA = 
+    let pattern = lift (\a -> if a then ShowStr "B" else ShowStr "A") isSwitched in 
+    pattern <@> (buttonA IsPressed) 
 
-data Msg = GetMag
+patternB:: Signal LED
+patternB = 
+    let pattern = lift (\a -> if a then ShowStr "A" else ShowStr "B") isSwitched in 
+    pattern <@> (buttonB IsPressed) 
+    
 
-update :: Msg -> Model -> Model 
-update msg model  = 
-    case msg of 
-        GetMag -> 
-            let force' = math_abs (magneticForce Strangth) in 
-            let isSwitched' = force' > 100 in 
-            model <^> [force @>force', isSwitched @> isSwitched']
-                
-
-view :: Model -> MicroBit
-view model =
-    microbit [
-        forever [GetMag] [],
-        buttonA [onPressed ()] [
-            if model # isSwitched then showstring "B"
-            else showstring "A"
-        ],
-        buttonB [onPressed ()] [
-            if model # isSwitched then showstring "A"
-            else showstring "B"
-        ]
-
-    ]
-
-main = sandbox inite view update
-
+main :: MicroBit
+main = microBit [led patternA,
+                 led patternB]

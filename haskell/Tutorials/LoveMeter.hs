@@ -1,12 +1,16 @@
 import MicroBit
+import Prelude hiding (map)
 
+sig :: Sig Bool
+sig = pin0 IsPressed
 
-showPattern :: Signal LED
-showPattern = 
-    let sig = when (pin0 IsPressed) in 
-    let num = (lift (\_ -> ShowNum (randomRange 0 10)) sig) in
-    let string = (lift (\_ -> ShowStr ("LOVE METER")) sig) in
-    num >> string
+randomNum :: Sig Int
+randomNum = map (\_ -> randomRange 0 10) sig
+
+str :: Sig String
+str = map (\_ -> ("LOVE METER")) sig 
+
+led :: MicroBit 
+led = showNum randomNum >> showStr str
     
-main = microBit[led showPattern]
 

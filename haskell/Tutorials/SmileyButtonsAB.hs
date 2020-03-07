@@ -1,12 +1,13 @@
 import MicroBit
+import Prelude hiding (map)
 
-pattern:: Signal LED
-pattern = lift (\_ -> ShowLED 
+pattern:: Sig Pattern 
+pattern = map (\_ ->  
     [   ". # . # .",
         "# # # # #",
         "# # # # #",
         ". # # # .",
-        ". . # . ."]) (when (buttonAB IsPressed))
+        ". . # . ."])  (buttonAB IsPressed)
 
-main :: MicroBit
-main = microBit [led pattern]
+led :: MicroBit
+led = showLED pattern

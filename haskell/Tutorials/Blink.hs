@@ -1,7 +1,10 @@
 import MicroBit
+import Prelude hiding (map)
 
-blink :: Signal Bool
-blink = foldP (\a state -> not state) False everySec
+blink :: Sig Bool
+blink = False @> map not (pre blink)
+--blink = fold (\a state -> not state) False everySec
 
-main :: MicroBit
-main = microBit [plot 2 2 blink]
+led :: MicroBit
+led = assert (blink .= True)
+      (plot 2 2 blink)

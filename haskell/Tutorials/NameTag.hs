@@ -1,10 +1,10 @@
 import MicroBit
 
-pattern:: Signal LED
-pattern = 
-    let hello = return $ ShowStr "Hello!" in 
-    let test = return $ ShowStr "Hello!" in 
-    hello >> test
+hello :: MicroBit
+hello = showStr $ return "Hello!"
 
-main :: MicroBit
-main = microBit [led pattern]
+icon :: MicroBit
+icon = showIcon $ return SmallDiamond
+
+led :: MicroBit
+led = hello >> icon

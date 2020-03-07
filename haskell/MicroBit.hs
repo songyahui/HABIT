@@ -4,151 +4,173 @@ module MicroBit where
 -----Abstraction of Signal------------------------------------
 -----Signal is a functor, Applicative, and Monad--------------
 --------------------------------------------------------------
-data Signal a = Signal a
 
-instance Functor Signal where
-    fmap fun (Signal a) = Signal $ fun a
+data Sig a = Sig a
 
-instance Applicative Signal where
-    pure a = Signal a
-    (<*>) (Signal fun) (Signal a) = (Signal $ fun a)
+instance Functor Sig where
+    fmap fun (Sig a) = Sig $ fun a
 
-instance Monad Signal where
-    return a = Signal a  
-    (>>=) (Signal a) fun = (fun a) 
-    (>>) (Signal a) (Signal b) = (Signal b)
+instance Applicative Sig where
+    pure a = Sig a
+    (<*>) (Sig fun) (Sig a) = (Sig $ fun a)
 
---------------------------------------------------------------
------Abstraction of Temporal Operators------------------------
---------------------------------------------------------------
+instance Monad Sig where
+    return a = Sig a  
+    (>>=) (Sig a) fun = (fun a) 
+    (>>) (Sig a) (Sig b) = (Sig b)
 
-when :: Signal Bool -> Signal Bool
-when a = a
+----------------------------------------------------
+-- I do not know if we need to assume a same clock--
+----------------------------------------------------
 
-pre :: Signal a -> Signal a
-pre a = a
-
--- followed by
-(@>) :: a -> Signal a -> Signal a
-init @> rest = rest
-
-current :: Signal a -> Signal a
-current a = a
-
---------------------------------------------------------------
------Abstraction of Combinators-------------------------------
---------------------------------------------------------------
-
-fold :: (a -> b -> b) -> b -> Signal a -> Signal b
-fold fun b (Signal a) = Signal (fun a b)
-
-lift :: (a -> b ) -> Signal a  -> Signal b
-lift fun (Signal a) =  Signal (fun a )
-
-lift_2 :: (a -> b -> c) -> Signal a -> Signal b -> Signal c
-lift_2 fun (Signal a) (Signal b) =  Signal (fun a b)
-
-lift_3 :: (a -> b -> c ->d) -> Signal a -> Signal b -> Signal c -> Signal d
-lift_3 fun (Signal a) (Signal b) (Signal c) =  Signal (fun a b c)
-
-lift_4 :: (a -> b -> c ->d -> e) -> Signal a -> Signal b -> Signal c -> Signal d -> Signal e
-lift_4 fun (Signal a) (Signal b) (Signal c) (Signal d) = Signal (fun a b c d)
-
-lift_5 :: (a -> b -> c ->d -> e->f) -> Signal a -> Signal b -> Signal c -> Signal d -> Signal e -> Signal f
-lift_5 fun (Signal a) (Signal b) (Signal c) (Signal d) (Signal e) = Signal (fun a b c d e )
+class (Monad signal) => Signal signal  where
+-----------------------------
+-----Temporal Operators------
+-----------------------------
+    (@>)  :: a -> signal a -> signal a -- followed by
+    pre   :: signal a -> signal a
+    when  ::  signal Bool -> signal a ->signal a
+    -- current :: signal a -> signal a 
+-----------------------------
+------  Combinators   -------
+-----------------------------
+    fold  :: (a -> b -> b) -> b -> signal a -> signal b
+    filter:: (a -> Bool) -> signal a -> signal a -- similar to when
+    map :: (a -> b ) -> signal a  -> signal b
+    map_2 :: (a -> b -> c) -> signal a -> signal b -> signal c
+    map_3 :: (a -> b -> c ->d) -> signal a -> signal b -> signal c -> signal d
+    map_4 :: (a -> b -> c ->d -> e) -> signal a -> signal b -> signal c -> signal d -> signal e
+    map_5 :: (a -> b -> c ->d -> e->f) -> signal a -> signal b -> signal c -> signal d -> signal e -> signal f
 
 --------------------------------------------------------------
--------- Abstraction of a MicroBit kit -----------------------
+--------------- Assertion ------------------------------------
+--------------------------------------------------------------
+    (.=) :: Eq a => signal a -> a -> Bool
+    (.<) :: Eq a => signal a -> a -> Bool
+    (.>) :: Eq a => signal a -> a -> Bool
+
+
+instance Signal Sig where
+    (@>) init rest = rest
+    pre a = a
+    when b a  =  a
+    -- current a = a
+    fold fun b (Sig a) = Sig (fun a b)
+    filter fun a = a
+    map fun (Sig a) =  Sig (fun a )
+    map_2 fun (Sig a) (Sig b) =  Sig (fun a b)
+    map_3 fun (Sig a) (Sig b) (Sig c) =  Sig (fun a b c)
+    map_4 fun (Sig a) (Sig b) (Sig c) (Sig d) = Sig (fun a b c d)
+    map_5 fun (Sig a) (Sig b) (Sig c) (Sig d) (Sig e) = Sig (fun a b c d e )
+
+    (.=) a1 a2 =  True
+    (.>) a1 a2 =  True
+    (.<) a1 a2 =  True
+    
+
+--------------------------------------------------------------
+-------- Abstractions of a MicroBit Devices ------------------
 --------------------------------------------------------------
 
 type MicroBit = IO ()
 
-data LED = ShowNum Int | ShowStr String | ShowLED [String] 
-data RADIO = SendStr String | SetGroup Int
+par  :: [MicroBit] -> MicroBit
+par a = a!! 0
 
-led :: Signal LED -> MicroBit
-led m = return () 
+data ICON = SmallDiamond | Diamond | Yes | No
 
-radio :: Signal RADIO -> MicroBit
-radio m = return ()
+type Pattern = [String]
 
-plot :: Int -> Int -> Signal Bool -> MicroBit
-plot x y s = return ()
+plot :: Int -> Int -> Sig Bool -> MicroBit
+plot a b s = return ()
 
-sendString :: String -> IO ()
-sendString str = return ()
+showNum :: Sig Int -> MicroBit
+showNum n = return ()
 
+showStr :: Sig String -> MicroBit
+showStr str = return ()
 
-microBit :: [MicroBit] -> MicroBit
-microBit a = a!!0
+showLED :: Sig Pattern -> MicroBit
+showLED p = return ()
 
-onStart :: [MicroBit] -> MicroBit
-onStart a = a!!0
+showIcon :: Sig ICON -> MicroBit
+showIcon i = return ()
+
+clear :: MicroBit
+clear = return ()
+
+radio_sendStr :: Sig String -> MicroBit
+radio_sendStr str = return ()
+
+radio_setGroup :: Sig Int -> MicroBit
+radio_setGroup num = return ()
+
+------------------------------------------------------------
+--------------- Gesture Signals ----------------------------
+------------------------------------------------------------
+shake :: Sig Bool
+shake = Sig True
+
+logoUp :: Sig Bool
+logoUp = Sig True
+
+logoDown :: Sig Bool
+logoDown = Sig True
+
+screenUp :: Sig Bool
+screenUp = Sig True
+
+screenDown :: Sig Bool
+screenDown = Sig True
+
+tiltLeft :: Sig Bool
+tiltLeft = Sig True
+
+tiltRight :: Sig Bool
+tiltRight = Sig True
+
+freeFall :: Sig Bool
+freeFall = Sig True
+
+threeG :: Sig Bool
+threeG = Sig True
+
+sixG :: Sig Bool
+sixG = Sig True
+
+eightG :: Sig Bool
+eightG = Sig True
 
 --------------------------------------------------------------
---------------- Gesture Listeners ----------------------------
---------------------------------------------------------------
-
-onShake :: Signal Bool
-onShake = Signal True
-
-onLogoUp :: Signal Bool
-onLogoUp = Signal True
-
-onLogoDown :: Signal Bool
-onLogoDown = Signal True
-
-onScreenUp :: Signal Bool
-onScreenUp = Signal True
-
-onScreenDown :: Signal Bool
-onScreenDown = Signal True
-
-tiltLeft :: Signal Bool
-tiltLeft = Signal True
-
-tiltRight :: Signal Bool
-tiltRight = Signal True
-
-freeFall :: Signal Bool
-freeFall = Signal True
-
-threeG :: Signal Bool
-threeG = Signal True
-
-sixG :: Signal Bool
-sixG = Signal True
-
-eightG :: Signal Bool
-eightG = Signal True
-
-
-onReceivedString :: Signal String
-onReceivedString = Signal "True"
-
---------------------------------------------------------------
---------------- Press Listeners ------------------------------
+--------------- Button/Pin Listeners -------------------------
 --------------------------------------------------------------
 
 data Opration = IsPressed | IsReleased
 
-pin0 :: Opration -> Signal Bool
-pin0 op = Signal True
+pin0 :: Opration -> Sig Bool
+pin0 op = Sig True
 
-pin1 :: Opration -> Signal Bool
-pin1 op = Signal True
+pin1 :: Opration -> Sig Bool
+pin1 op = Sig True
 
-pin2 :: Opration -> Signal Bool
-pin2 op = Signal True
+pin2 :: Opration -> Sig Bool
+pin2 op = Sig True
 
-buttonA :: Opration -> Signal Bool
-buttonA op = Signal True
+buttonA :: Opration -> Sig Bool
+buttonA op = Sig True
 
-buttonB :: Opration -> Signal Bool
-buttonB op = Signal True
+buttonB :: Opration -> Sig Bool
+buttonB op = Sig True
 
-buttonAB :: Opration -> Signal Bool
-buttonAB op = Signal True
+buttonAB :: Opration -> Sig Bool
+buttonAB op = Sig True
+
+--------------------------------------------------------------
+--------------- RADIO receive Listeners ----------------------
+--------------------------------------------------------------
+
+onReceivedString :: Sig String
+onReceivedString = Sig "True"
 
 --------------------------------------------------------------
 ----- Preliminaries for randomness ---------------------------
@@ -157,17 +179,23 @@ buttonAB op = Signal True
 randomRange :: Int -> Int -> Int
 randomRange a b = 0 
 
+randomBoolean :: Bool
+randomBoolean = True
 
 
+data Dimension = Strength | X | Y | Z
+
+magneticForce :: Dimension -> Sig Float
+magneticForce a = Sig 0.0
+
+_abs :: Float -> Float
+_abs a = a
+
+everySec :: Sig Int
+everySec = Sig 1
 
 
-generateRandomBool :: Bool
-generateRandomBool = True
+main = print 0
 
-
-
-everySec :: Signal Int
-everySec = Signal 1
-
-foldP :: ( a -> acc -> acc) -> acc -> Signal a -> Signal acc
-foldP fun init li = Signal init
+assert :: a -> b -> b
+assert a b = b

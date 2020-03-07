@@ -1,12 +1,14 @@
 import MicroBit
+import Prelude hiding (map)
 
-mesg :: Signal RADIO
-mesg = lift (\_ -> SendStr "Yo") (when (buttonA IsPressed))
+mesg :: Sig String
+mesg = map (\_ -> "Yo") (buttonA IsPressed)
 
-receivedString :: Signal LED
-receivedString = lift (\a -> ShowStr a) onReceivedString
+receivedString :: Sig String
+receivedString = onReceivedString
 
-main = microBit [
-        radio mesg, 
-        led receivedString
+radio :: MicroBit
+radio = par [
+    radio_sendStr mesg,
+    showStr receivedString
     ]

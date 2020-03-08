@@ -1,10 +1,10 @@
 import MicroBit
 
-pattern:: Signal LED
+pattern:: Sig Pattern
 pattern = 
     let a = randomRange 0 3 in 
-    return $ ShowLED (if a ==0 then 
-    [  
+    (if a ==0 then 
+    return $ [  
         " . . # . .", 
         " . . # . .", 
         " . . # . .", 
@@ -12,14 +12,14 @@ pattern =
         " . . # . ."
     ]
     else if a ==1 then 
-    [
+    return $ [
         " # . . . .", 
         " . # . . .", 
         " . . # . .", 
         " . . . # .", 
         " . . . . #"
     ]
-    else [
+    else return $ [
         " . . . . #",
         " . . . # .",
         " . . # . .",
@@ -28,5 +28,5 @@ pattern =
     ]
     )
 
-main :: MicroBit
-main = microBit [led pattern]
+led :: MicroBit
+led = showLED pattern

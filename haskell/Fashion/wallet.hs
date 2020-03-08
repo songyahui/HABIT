@@ -1,34 +1,27 @@
-import MicroBit 
+import MicroBit
+import Prelude hiding (map) 
 
-type Model = Int 
+if_b :: MicroBit
+if_b = (showLED $ return 
+        [". # . # .",
+        "# # # # #",
+        "# # # # #",
+        ". # # # .",
+        ". . # . ."])
+        >>
+        (showLED $ return 
+           [   ". # . # .",
+        "# # # # #",
+        "# # # # #",
+        ". # # # .",
+        ". . # . ."]
+        )
 
-inite :: (Model, Cmd Msg) 
-inite = (0, CmdNone)
-
-data Msg = Tick Posix | ConsumeLevel Int
-
-update :: Msg -> Model -> (Model, Cmd Msg)
-update msg model = 
-    case msg of 
-        Tick time -> (model, readSensor ConsumeLevel lightLevel)
-        ConsumeLevel num -> (num, CmdNone)
+else_b :: MicroBit
+else_b = clear >> pause 3000
 
 
-subscriptions :: Model -> Sub Msg
-subscriptions model =
-  every 3000 Tick
-
-view :: Model -> MicroBit
-view model  =  
-    microbit [
-        forever [] [
-            if model < 16 then 
-                clearScreen
-            else 
-                showLeds "# # . # # # # . # # . # # # . . # . # . . # . # ."
-                , showLeds ". . # . . . . # . . # . . . # # . # . # # . # . #"
-                
-        ]
-    ]
-
-main = element inite view update subscriptions
+led :: MicroBit
+led = 
+    assert (lightLevel .> 0)
+    (if lightLevel .>16 then if_b else else_b) 

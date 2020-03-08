@@ -13,17 +13,17 @@ ghc Tutorials/SmileyButtonsAB.hs
 ghc Games/CoinFlipper.hs
 ghc Games/RockPaperScissors.hs
 
+#Fashion
+ghc Fashion/wallet.hs
+ghc Fashion/watch.hs
+ghc Fashion/step_counter.hs
+
 #A bit difficute
 ghc Games/CrashyBird.hs 
 ghc Games/MagicButtonTrick.hs
 ghc Games/ReactionTime.hs
 #ghc Games/Salute.hs
 ghc Games/SnapTheDot.hs
-
-#Fashion
-ghc Fashion/wallet.hs
-ghc Fashion/watch.hs
-ghc Fashion/step_counter.hs
 
 #Radio_Games
 #ghc Radio_Games/fireflies.hs

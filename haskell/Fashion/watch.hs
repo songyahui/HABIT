@@ -1,29 +1,16 @@
 import MicroBit
+import Prelude hiding (map) 
 
-type Model = Int
+reset :: Sig Bool
+reset = buttonA IsPressed
 
-inite :: Model 
-inite  = 0 
+increase :: Sig Int
+increase = fold (\_ acc -> acc + 1) 0 shake
 
-data Msg = Increase | Reset
-
-
-update :: Msg -> Model -> Model 
-update msg model = 
-    case msg of 
-        Increase -> model + 1 
-        Reset -> 0
-
-view :: Model -> MicroBit
-view model = 
-    microbit [
-        gesture [onShake Increase ] [
-            shownumber model 
-        ],
-        buttonA [onPressed Reset] [
-            shownumber model 
-        ]
-    ]
-
-
-main = sandbox inite view update
+number :: Sig Int
+number = 
+    if (reset .= True) then Sig 0
+    else increase
+    
+led :: MicroBit
+led = showNum number

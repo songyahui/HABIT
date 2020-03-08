@@ -1,11 +1,8 @@
 import MicroBit
 
-pattern:: Signal LED
-pattern = 
-    let a = return $ ShowIcon SmallDiamond in 
-    let b = return $ ShowIcon Diamond in 
-    let c = return $ ShowIcon (if randomBoolean then Yes else No) in 
+led :: MicroBit
+led = 
+    let a = showIcon $ return SmallDiamond in 
+    let b = showIcon $ return Diamond in 
+    let c = showIcon $ return (if randomBoolean then Yes else No) in 
     a >> b >> a >> b >> c
-
-main :: MicroBit
-main = microBit [led pattern]

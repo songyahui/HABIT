@@ -99,6 +99,9 @@ showIcon i = return ()
 clear :: MicroBit
 clear = return ()
 
+pause :: Int -> MicroBit
+pause num = return ()
+
 radio_sendStr :: Sig String -> MicroBit
 radio_sendStr str = return ()
 
@@ -173,6 +176,21 @@ onReceivedString :: Sig String
 onReceivedString = Sig "True"
 
 --------------------------------------------------------------
+--------------- sensor ----------------------
+--------------------------------------------------------------
+
+lightLevel :: Sig Int
+lightLevel = Sig 0
+
+data Dimension = Strength | X | Y | Z
+
+magneticForce :: Dimension -> Sig Int
+magneticForce a = Sig 0
+
+_abs :: Int -> Int
+_abs a = a
+
+--------------------------------------------------------------
 ----- Preliminaries for randomness ---------------------------
 --------------------------------------------------------------
 
@@ -183,13 +201,7 @@ randomBoolean :: Bool
 randomBoolean = True
 
 
-data Dimension = Strength | X | Y | Z
 
-magneticForce :: Dimension -> Sig Float
-magneticForce a = Sig 0.0
-
-_abs :: Float -> Float
-_abs a = a
 
 everySec :: Sig Int
 everySec = Sig 1

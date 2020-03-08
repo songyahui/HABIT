@@ -17,6 +17,18 @@ patternB =
     pattern <@> (buttonB IsPressed) 
     
 
-main :: MicroBit
-main = microBit [led patternA,
-                 led patternB]
+
+force :: Sig Int
+force = abs (magneticForce Strength )
+
+isSwitched :: Sig Bool
+isSwitched = map (> 100) force
+
+a :: Sig String
+a = map (\a -> if a then "B" else "A") isSwitched
+
+b= 
+led :: MicroBit
+led = par [
+
+    ]

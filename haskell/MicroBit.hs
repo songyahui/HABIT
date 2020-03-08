@@ -81,8 +81,8 @@ data ICON = SmallDiamond | Diamond | Yes | No
 
 type Pattern = [String]
 
-plot :: Int -> Int -> Sig Bool -> MicroBit
-plot a b s = return ()
+plot :: Sig (Int, Int) -> Sig Bool -> MicroBit
+plot b s = return ()
 
 showNum :: Sig Int -> MicroBit
 showNum n = return ()
@@ -191,6 +191,16 @@ _abs :: Int -> Int
 _abs a = a
 
 --------------------------------------------------------------
+--------------- Game ----------------------
+--------------------------------------------------------------
+type Sprite =  (Int, Int)
+
+type LedSprite = [Sprite]
+
+showLedSprite :: Sig LedSprite -> MicroBit
+showLedSprite li = return ()
+
+--------------------------------------------------------------
 ----- Preliminaries for randomness ---------------------------
 --------------------------------------------------------------
 
@@ -203,9 +213,11 @@ randomBoolean = True
 
 
 
-everySec :: Sig Int
-everySec = Sig 1
+everySec :: Sig Bool
+everySec = Sig True
 
+millisec :: Int -> Sig Bool
+millisec t = Sig True
 
 main = print 0
 

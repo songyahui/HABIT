@@ -1,34 +1,17 @@
 import MicroBit
+import Prelude hiding (map)
 
-force :: Signal Float 
-force = lift _abs (magneticForce Strength)
-
-isSwitched :: Signal Bool
-isSwitched = False  @> (lift (> 100) force)
-
-patternA:: Signal LED
-patternA = 
-    let pattern = lift (\a -> if a then ShowStr "B" else ShowStr "A") isSwitched in 
-    pattern <@> (buttonA IsPressed) 
-
-patternB:: Signal LED
-patternB = 
-    let pattern = lift (\a -> if a then ShowStr "A" else ShowStr "B") isSwitched in 
-    pattern <@> (buttonB IsPressed) 
-    
-
-
-force :: Sig Int
-force = abs (magneticForce Strength )
+force :: Sig Int 
+force = map _abs (magneticForce Strength)
 
 isSwitched :: Sig Bool
 isSwitched = map (> 100) force
 
-a :: Sig String
-a = map (\a -> if a then "B" else "A") isSwitched
+onbuttonA :: Sig String
+onbuttonA = map_2 (\a b -> if a && b then "B" else "A") (isSwitched) (buttonA IsPressed)
 
-b= 
+onbuttonB :: Sig String
+onbuttonB = map_2 (\a b -> if a && b then "A" else "B") (isSwitched) (buttonB IsPressed)
+
 led :: MicroBit
-led = par [
-
-    ]
+led = par [showStr onbuttonA, showStr onbuttonB]
